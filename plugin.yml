@@ -1,0 +1,16 @@
+name: Brabotools
+main: com.leovanhaaren.brabotools.Brabotools
+version: 0.1
+author: Leo
+description: This plugin is so 31337.
+commands:
+    table:
+        description: Command for creating a displaytable!
+    slap:
+        description: Command for slapping naughty players!
+    hammer:
+        description: Command for hammertime!
+    unhammer:
+        description: Command for unhammertime!
+    explode:
+        description: Command for exploding players!
