@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
+import com.leovanhaaren.brabotools.display.DisplayTable;
 import com.leovanhaaren.brabotools.util.Hammer;
 
 public class PlayerListener implements Listener {
@@ -18,12 +19,10 @@ public class PlayerListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent e) {
         if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 	        if(e.getClickedBlock().getType() == Material.STEP) {
-	        	@SuppressWarnings("unused")
 				Player p = e.getPlayer();
-		        //if(p.getItemInHand().getType() == Material.FEATHER)
-		        	
-		        	//Displaytable dpt = new DisplayTable;
-		        	//dpt.placeItem(e.getPlayer(), e.getClickedBlock());
+		        if(p.getItemInHand().getType() == Material.FEATHER) {
+		        	new DisplayTable(e.getPlayer(), e.getClickedBlock());
+		        }
 	        }
         }
     }

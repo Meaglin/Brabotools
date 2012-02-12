@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.leovanhaaren.brabotools.inventory.Item;
 
-public class SpecialSnowball {
+public class ExplosiveSnowball {
 
 	public static void Explode(Player player, Entity entity) {
         if(Item.Remove(player.getInventory(), new ItemStack(Material.TNT, 1))){

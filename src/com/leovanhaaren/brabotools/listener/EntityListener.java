@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 
-import com.leovanhaaren.brabotools.util.SpecialSnowball;
+import com.leovanhaaren.brabotools.util.ExplosiveSnowball;
 
 public class EntityListener implements Listener {
     
@@ -33,7 +33,7 @@ public class EntityListener implements Listener {
             Entity shooter = travel.getShooter();
             if(shooter instanceof Player) {
                 Player p = (Player) shooter;
-                SpecialSnowball.Explode(p, entity);
+                ExplosiveSnowball.Explode(p, entity);
             }
         }
     }

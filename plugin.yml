@@ -6,11 +6,16 @@ description: This plugin is so 31337.
 commands:
     table:
         description: Command for creating a displaytable!
+        usage: /<command>
     slap:
         description: Command for slapping naughty players!
+        usage: /<command>
     hammer:
         description: Command for hammertime!
+        usage: /<command>
     unhammer:
         description: Command for unhammertime!
+        usage: /<command>
     explode:
         description: Command for exploding players!
+        usage: /<command>

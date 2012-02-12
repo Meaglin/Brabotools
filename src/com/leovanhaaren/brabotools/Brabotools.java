@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.leovanhaaren.brabotools.commands.ExplodeCommand;
 import com.leovanhaaren.brabotools.commands.HammerCommand;
 import com.leovanhaaren.brabotools.commands.SlapCommand;
+import com.leovanhaaren.brabotools.commands.TableCommand;
 import com.leovanhaaren.brabotools.commands.UnHammerCommand;
 import com.leovanhaaren.brabotools.listener.BlockListener;
 import com.leovanhaaren.brabotools.listener.PlayerListener;
@@ -43,7 +44,7 @@ public class Brabotools extends JavaPlugin {
 	}
     
     public void registerCommands() {
-        //getCommand("table").setExecutor(new TableCommand(plugin));
+        getCommand("table").setExecutor(new TableCommand());
         getCommand("hammer").setExecutor(new HammerCommand());
         getCommand("unhammer").setExecutor(new UnHammerCommand());
         getCommand("explode").setExecutor(new ExplodeCommand());
