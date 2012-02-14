@@ -5,7 +5,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import com.leovanhaaren.brabotools.util.Chat;
 import com.leovanhaaren.brabotools.util.Hammer;
 
 public class UnHammerCommand implements CommandExecutor {
@@ -18,9 +17,9 @@ public class UnHammerCommand implements CommandExecutor {
 			Player target = Bukkit.getServer().getPlayer(args[0]);
 			if(target != null) {
 				Hammer.unhammerPlayer(target);
-				Chat.playerMessage((Player) sender, "Unhammer time!");
+				sender.sendMessage("Unhammer time!");
 			} else {
-				Chat.playerMessage((Player) sender, "Player is offline.");
+				sender.sendMessage("Player is offline.");
 			}
 		}
 		

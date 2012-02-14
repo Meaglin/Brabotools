@@ -5,7 +5,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import com.leovanhaaren.brabotools.util.Chat;
 import com.leovanhaaren.brabotools.util.Explode;
 
 public class ExplodeCommand implements CommandExecutor {
@@ -18,9 +17,9 @@ public class ExplodeCommand implements CommandExecutor {
 			Player target = Bukkit.getServer().getPlayer(args[0]);
 			if(target != null) {
 				Explode.explodePlayer(target);
-				Chat.playerMessage((Player) sender, "Exploded player.");
+				sender.sendMessage("Exploded player.");
 			} else {
-				Chat.playerMessage((Player) sender, "Player is offline.");
+				sender.sendMessage("Player is offline.");
 			}
 		}
 		return true;

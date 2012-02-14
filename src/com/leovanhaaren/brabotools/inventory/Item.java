@@ -29,4 +29,13 @@ public class Item {
 		
 		return false;
 	}
+	
+	public static boolean Add(Inventory inventory, ItemStack item) {
+		if(inventory.firstEmpty() == -1){
+			inventory.addItem(item);
+			return true;
+		}
+		
+		return false;
+	}
 }

@@ -1,4 +1,4 @@
-package com.leovanhaaren.brabotools.commands;
+package com.leovanhaaren.brabotools.unused;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
