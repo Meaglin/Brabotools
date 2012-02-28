@@ -1,60 +1,50 @@
 package com.leovanhaaren.brabotools.util;
 
-import java.util.HashMap;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.leovanhaaren.brabotools.inventory.Item;
+
 public class CaptureMob {
-	
-	static HashMap<String, Integer> creatureTypes = new HashMap<String, Integer>();
 
 	@SuppressWarnings("deprecation")
-	public static void Catch(Player p, Entity e) {
-		registerMobTypes();
-		
-		String mob = getMobType(e);
-		if(creatureTypes.containsKey(mob)) {
-			short type = (short) creatureTypes.get(mob).intValue();
-			
-			p.getInventory().addItem(new ItemStack(383, 1, type));
-			p.updateInventory();
-			p.sendMessage(ChatColor.GOLD + "You caught a " + mob + "!");
-			e.remove();
-		} else {
-			p.sendMessage(ChatColor.RED + "Sorry, but a " + mob + " can't be caught!");
+	public static void Catch(Player p, LivingEntity e) {
+        for (EggType eggType : EggType.values()) {
+            if (eggType.isInstance(e)) {
+                if (eggType.isEnabled()) {
+                	ItemStack cost = new ItemStack(371, 1);
+                	if(Item.Remove(p.getInventory(), cost)) {
+	                	if(getSucces()) {
+	                        e.remove();
+	                        ItemStack item = new ItemStack(383, 1, (short) eggType.getId());
+	                        p.getWorld().dropItem(e.getLocation(), item);
+	                        String mob = eggType.getCreatureType().getName();
+	                        p.sendMessage(ChatColor.GOLD + mob + " was caught.");
+	                    	p.updateInventory();
+	                        break;
+	                	}
+                	} else {
+                    	p.sendMessage(ChatColor.RED + "Sorry, gold nuggets are required.");
+                    	break;
+                    }
+                }  else {
+                	p.sendMessage(ChatColor.RED + "Sorry, that mob can't be caught.");
+                	break;
+                }
+            }
+        }
+	}
+	
+	public static boolean getSucces() {
+		Random r = new Random();
+		if(r.nextDouble() > (0.8) ) {
+			return true;
 		}
-
+		return false;
 	}
-	
-	public static String getMobType(Entity e) {
-		String s = e.getClass().getName();
-		return s.substring(s.lastIndexOf('.') + 6);
-	}
-	
-	public static void registerMobTypes() {
-		creatureTypes.put("Creeper", 50);
-		creatureTypes.put("Skeleton", 51);
-		creatureTypes.put("Spider", 52);
-		creatureTypes.put("Zombie", 54);
-		creatureTypes.put("Slime", 55);
-		creatureTypes.put("Ghast", 56);
-		creatureTypes.put("PigZombie", 57);
-		creatureTypes.put("Enderman", 58);
-		creatureTypes.put("CaveSpider", 59);
-		creatureTypes.put("Silverfish", 60);
-		creatureTypes.put("Blaze", 61);
-		creatureTypes.put("MagmaCube", 62);
-		creatureTypes.put("Pig", 90);
-		creatureTypes.put("Sheep", 91);
-		creatureTypes.put("Cow", 92);
-		creatureTypes.put("Chicken", 93);
-		creatureTypes.put("Squid", 94);
-		creatureTypes.put("Wolf", 95);
-		creatureTypes.put("MushroomCow", 96);
-		creatureTypes.put("Villager", 120);
-	}
-	
+    
 }

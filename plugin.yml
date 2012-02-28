@@ -2,20 +2,5 @@ name: Brabotools
 main: com.leovanhaaren.brabotools.Brabotools
 version: 0.1
 author: Leo
-description: This plugin is so 31337.
+description: Plugin for catching mobs with eggs.
 commands:
-    table:
-        description: Command for creating a displaytable!
-        usage: /<command>
-    slap:
-        description: Command for slapping naughty players!
-        usage: /<command>
-    hammer:
-        description: Command for hammertime!
-        usage: /<command>
-    unhammer:
-        description: Command for unhammertime!
-        usage: /<command>
-    explode:
-        description: Command for exploding players!
-        usage: /<command>
