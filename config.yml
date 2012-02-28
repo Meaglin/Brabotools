@@ -1,6 +1,9 @@
 # Config for CaptureMob
 # Flag mobs as catchable.
 
+tntSnowball:
+    enabled: true
+    range: 3
 mobs:
     Creeper: true
     Skeleton: true
