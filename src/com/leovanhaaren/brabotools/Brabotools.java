@@ -2,6 +2,7 @@ package com.leovanhaaren.brabotools;
 
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -11,35 +12,39 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-//import com.leovanhaaren.brabotools.permissions.Permissions;
-//import com.leovanhaaren.brabotools.permissions.PermissionsResolver;
 import com.leovanhaaren.brabotools.util.CaptureMob;
 import com.leovanhaaren.brabotools.util.EggType;
+import com.zones.Zones;
+import com.zones.permissions.Permissions;
+import com.zones.permissions.PermissionsResolver;
 
 
 public class Brabotools extends JavaPlugin implements Listener {
 	
-	public static Brabotools			plugin  		= null;
-	//private static final String 		prefix 			= "brabotools.";
     protected static final Logger       logger          = Logger.getLogger("Minecraft");
-    //private Permissions permissions;
+    private Permissions 				permissions 	= null;
+    private Zones 						zones 			= null;
 
    	public void onDisable(){
-   		plugin = null;
    		PluginDescriptionFile pdfFile = this.getDescription();
    		logger.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is now disabled.");
    	}   
    	
     public void onEnable() {
-    	plugin = this;
 		PluginDescriptionFile pdfFile = this.getDescription();
 		logger.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is now enabled.");
 		
-		//permissions = PermissionsResolver.resolve(this);
-		getServer().getPluginManager().registerEvents(this, plugin);
+		permissions = PermissionsResolver.resolve(this);
+		Plugin plugin = getServer().getPluginManager().getPlugin("Zones");
+		if(plugin != null) {
+			Zones zones = (Zones)plugin;
+		}
+		
+		getServer().getPluginManager().registerEvents(this, this);
 		
         for (EggType eggType : EggType.values()) {
                 String creatureName = eggType.getCreatureType().getName();
@@ -61,21 +66,27 @@ public class Brabotools extends JavaPlugin implements Listener {
 	            if((shooter instanceof Player)) {
 		            if(!(target instanceof Player)) {
 		            	Player player = (Player) shooter;
-		            	//if(canUse(player, "mobCatch")) {
-							CaptureMob.Catch(player, target);
-		            	//}
+		            	if(canUse(player, "mobCatch")) {
+		            		if(canHit(player, target)) {
+		            			CaptureMob.Catch(player, target);
+		            		} else {
+			            		player.sendMessage(ChatColor.RED + "Sorry, you need hit rights.");
+			            	}
+		            	} else {
+		            		player.sendMessage(ChatColor.RED + "Sorry, you need permissions to do this.");
+		            	}
 		            }
 	            }
 			}
 		}
 	}
 	
-	/*public boolean canUse(Player player, String node) {
-	    return permissions.canUse(player, prefix + node);
-	}*/
-    
-    public static Brabotools getInstance(){
-        return plugin;
-    }
+	public boolean canUse(Player player, String node) {
+		return permissions == null ? false : permissions.canUse(player, node);
+	}
+	
+	public boolean canHit(Player player, Entity entity) {
+		return zones == null ? false : zones.getApi().canHit(player,entity);
+	}
 	
 }

@@ -11,7 +11,7 @@ public class ExplosiveSnowball {
 
 	public static void Explode(Player player, Entity entity) {
         if(Item.Remove(player.getInventory(), new ItemStack(Material.TNT, 1))){
-    	    entity.getWorld().createExplosion(entity.getLocation(), 5);
+    	    entity.getWorld().createExplosion(entity.getLocation(), 3);
         }
 	}
 }
