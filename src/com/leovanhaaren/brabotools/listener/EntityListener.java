@@ -10,14 +10,21 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
-
 import com.leovanhaaren.brabotools.Brabotools;
-import com.leovanhaaren.brabotools.util.CaptureMob;
-import com.leovanhaaren.brabotools.util.ExplosiveSnowball;
+import com.leovanhaaren.brabotools.util.CaptureManager;
+import com.leovanhaaren.brabotools.util.DisplayTable;
+import com.leovanhaaren.brabotools.util.TntSnowball;
 
 public class EntityListener implements Listener {
 	
+	private Brabotools brabotools = null;
+
+	public EntityListener(Brabotools bt) {
+		brabotools = bt;
+	}
+
 	@EventHandler(priority = EventPriority.LOW)
     public void onProjectileHit(ProjectileHitEvent e) {
 		Entity entity = e.getEntity();
@@ -27,8 +34,8 @@ public class EntityListener implements Listener {
             Entity shooter = snowball.getShooter();
             if((shooter instanceof Player)) {
                 Player player = (Player) shooter;
-                if(Brabotools.canUse(player, "tntSnowball")) {
-                	ExplosiveSnowball.Explode(player, entity);
+                if(brabotools.canUse(player, "tntSnowball")) {
+                	TntSnowball.Explode(player, entity);
                 }
             }
         }
@@ -47,9 +54,9 @@ public class EntityListener implements Listener {
 	            if((shooter instanceof Player)) {
 		            if(!(target instanceof Player)) {
 		            	Player player = (Player) shooter;
-		            	if(Brabotools.canUse(player, "mobCatch")) {
-		            		if(Brabotools.canHit(player, target)) {
-		            			CaptureMob.Catch(player, target);
+		            	if(brabotools.canUse(player, "mobCatch")) {
+		            		if(brabotools.canHit(player, target)) {
+		            			CaptureManager.Catch(player, target);
 		            		} else {
 		            			e.setCancelled(true);
 			            	}
@@ -61,5 +68,18 @@ public class EntityListener implements Listener {
 			}
 		}
 	}
+	
+	@EventHandler(priority = EventPriority.LOW)
+    public void onItemDespawn(ItemDespawnEvent event) {
+		for (DisplayTable table:  brabotools.getDisplayManager().getDisplayTables()) {
+			try {
+				if(table.getItem().equals(event.getEntity())){
+					table.getItem().setPickupDelay(2500);
+					event.setCancelled(true);
+					table.respawn();
+				}
+			} catch (Exception e) {}
+		}
+    }
 	
 }

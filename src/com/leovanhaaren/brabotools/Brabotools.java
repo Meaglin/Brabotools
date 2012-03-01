@@ -9,9 +9,11 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.leovanhaaren.brabotools.listener.BlockListener;
 import com.leovanhaaren.brabotools.listener.EntityListener;
-import com.leovanhaaren.brabotools.util.EggType;
-import com.leovanhaaren.brabotools.util.ExplosiveSnowball;
+import com.leovanhaaren.brabotools.listener.PlayerListener;
+import com.leovanhaaren.brabotools.listener.WorldListener;
+import com.leovanhaaren.brabotools.util.DisplayManager;
 import com.zones.Zones;
 import com.zones.permissions.Permissions;
 import com.zones.permissions.PermissionsResolver;
@@ -19,9 +21,11 @@ import com.zones.permissions.PermissionsResolver;
 
 public class Brabotools extends JavaPlugin {
 	
-    protected static final Logger       logger          = Logger.getLogger("Minecraft");
-    private static Permissions 			permissions 	= null;
-    private static Zones 				zones 			= null;
+    public static final Logger      logger			= Logger.getLogger("Minecraft");
+    
+    private DisplayManager 			displaymanager	= null;
+    private Permissions 			permissions 	= null;
+    private Zones 					zones 			= null;
 
    	public void onDisable(){
    		PluginDescriptionFile pdfFile = this.getDescription();
@@ -32,39 +36,38 @@ public class Brabotools extends JavaPlugin {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		logger.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is now enabled.");
 		
-		this.getConfig().options().copyDefaults(true);
-		saveConfig();
+		Config config = new Config(this);
+		config.loadConfig();
 		
 		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(new EntityListener(), this);
+		pm.registerEvents(new WorldListener(this), this);
+		pm.registerEvents(new EntityListener(this), this);
+		pm.registerEvents(new PlayerListener(this), this);
+		pm.registerEvents(new BlockListener(this), this);
 		
-		permissions = PermissionsResolver.resolve(this);
+		permissions 	= PermissionsResolver.resolve(this);
+		displaymanager 	= new DisplayManager();
 		
 		Plugin plugin = pm.getPlugin("Zones");
 		if(plugin != null) zones = (Zones)plugin;
-		
-        for (EggType eggType : EggType.values()) {
-                String creatureName = eggType.getCreatureType().getName();
-                boolean enabled = getConfig().getBoolean("mobs." + creatureName);
-	            eggType.setEnabled(enabled);
-        }
-        
-        ExplosiveSnowball.setEnabled(getConfig().getBoolean("tntSnowball.enabled"));
-        ExplosiveSnowball.setRange(getConfig().getInt("tntSnowball.range"));
     }
 	
-	public static boolean canUse(Player player, String node) {
+	public boolean canUse(Player player, String node) {
 		if(permissions != null) {
 			return permissions.canUse(player, node);
 		}
 		return true;
 	}
 	
-	public static boolean canHit(Player player, Entity entity) {
+	public boolean canHit(Player player, Entity entity) {
 		if(zones != null) {
 			return zones.getApi().canHit(player,entity);
 		}
 		return true;
+	}
+
+	public DisplayManager getDisplayManager() {
+		return displaymanager;
 	}
 	
 }
