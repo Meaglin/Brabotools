@@ -4,25 +4,29 @@
 tntSnowball:
     enabled: true
     range: 3
-mobs:
-    Creeper: true
-    Skeleton: true
-    Spider: false
-    Zombie: true
-    Slime: true
-    Ghast: false
-    PigZombie: true
-    Enderman: true
-    CaveSpider: false
-    Silverfish: true
-    Blaze: true
-    LavaSlime: false
-    Pig: true
-    Sheep: true
-    Cow: true
-    Chicken: true
-    Squid: false
-    Wolf: true
-    MushroomCow: false
-    SnowMan: false
-    Villager: false
+mobCatch:
+    enabled: true
+    mobs:
+        Creeper: true
+        Skeleton: true
+        Spider: false
+        Zombie: true
+        Slime: true
+        Ghast: false
+        PigZombie: true
+        Enderman: true
+        CaveSpider: false
+        Silverfish: true
+        Blaze: true
+        LavaSlime: false
+        Pig: true
+        Sheep: true
+        Cow: true
+        Chicken: true
+        Squid: false
+        Wolf: true
+        MushroomCow: false
+        SnowMan: false
+        Villager: false
+displayTable:
+    enabled: true

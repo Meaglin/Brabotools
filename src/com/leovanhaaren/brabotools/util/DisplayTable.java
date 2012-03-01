@@ -52,7 +52,8 @@ public class DisplayTable {
 	
 	public void respawn() {
 		if (isChunkLoaded()) {
-			item.remove();
+			if(item != null) item.remove();
+			
 			ItemStack stack = new ItemStack(getMaterial(), 1, getData());
 			setItem(getBlock().getLocation().getWorld().dropItem(getBlock().getLocation(), stack));
 			getItem().setPickupDelay(2500);
@@ -71,12 +72,11 @@ public class DisplayTable {
 	public void setLocation(Location location) {
 		location = location.getBlock().getLocation();
 		Vector vec = location.toVector();
-		vec.add(new Vector(0.5, 0.6, 0.5));
+		vec.add(new Vector(0.5, 1.1, 0.5));
 		location = vec.toLocation(location.getWorld());
 		this.location = location;
-		if (item != null) {
-			item.teleport(location);
-		}
+		
+		if (item != null) item.teleport(location);
 	}
 
 	public Location getLocation() {

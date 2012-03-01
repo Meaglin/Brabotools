@@ -11,18 +11,19 @@ import com.leovanhaaren.brabotools.util.DisplayTable;
 
 public class WorldListener implements Listener {
 	
-	private Brabotools brabotools = null;
+	private Brabotools plugin;
 
-	public WorldListener(Brabotools bt) {
-		brabotools = bt;
+	public WorldListener(Brabotools brabotools) {
+		plugin = brabotools;
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
     public void onChunkLoad(ChunkLoadEvent event) {
-		for (DisplayTable item : brabotools.getDisplayManager().getDisplayTables()) {
+		for (DisplayTable table : plugin.getDisplayManager().getDisplayTables()) {
 			try {
-				if (event.getChunk().equals(item.getBlock().getChunk())) {
-
+				if (event.getChunk().equals(table.getBlock().getChunk())) {
+					table.respawn();
+					plugin.getLogger().info("Display Table unloaded because of chunk inactivity.");
 				}
 			} catch (Exception e) {}
 		}
@@ -30,10 +31,11 @@ public class WorldListener implements Listener {
     
     @EventHandler(priority = EventPriority.LOW)
 	public void onChunkUnload(ChunkUnloadEvent event) {
-		for (DisplayTable displayTable : brabotools.getDisplayManager().getDisplayTables()) {
+		for (DisplayTable table : plugin.getDisplayManager().getDisplayTables()) {
 			try {
-				if (event.getChunk().equals(displayTable.getBlock().getChunk())) {
-
+				if (event.getChunk().equals(table.getBlock().getChunk())) {
+					table.remove();
+					plugin.getLogger().info("Display Table loaded because of chunk activity.");
 				}
 			} catch (Exception e) {}
 		}

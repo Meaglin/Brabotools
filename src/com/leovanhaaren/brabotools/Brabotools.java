@@ -21,11 +21,10 @@ import com.zones.permissions.PermissionsResolver;
 
 public class Brabotools extends JavaPlugin {
 	
-    public static final Logger      logger			= Logger.getLogger("Minecraft");
-    
-    private DisplayManager 			displaymanager	= null;
-    private Permissions 			permissions 	= null;
-    private Zones 					zones 			= null;
+    private Logger      		logger			= Logger.getLogger("Minecraft");
+    private DisplayManager 		displaymanager	= null;
+    private Permissions 		permissions 	= null;
+    private Zones 				zones 			= null;
 
    	public void onDisable(){
    		PluginDescriptionFile pdfFile = this.getDescription();
@@ -41,9 +40,9 @@ public class Brabotools extends JavaPlugin {
 		
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new WorldListener(this), this);
+		pm.registerEvents(new BlockListener(this), this);
 		pm.registerEvents(new EntityListener(this), this);
 		pm.registerEvents(new PlayerListener(this), this);
-		pm.registerEvents(new BlockListener(this), this);
 		
 		permissions 	= PermissionsResolver.resolve(this);
 		displaymanager 	= new DisplayManager();
@@ -68,6 +67,10 @@ public class Brabotools extends JavaPlugin {
 
 	public DisplayManager getDisplayManager() {
 		return displaymanager;
+	}
+	
+	public Logger getLogger() {
+		return logger;
 	}
 	
 }
