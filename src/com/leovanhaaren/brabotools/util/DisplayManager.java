@@ -1,6 +1,7 @@
 package com.leovanhaaren.brabotools.util;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -11,15 +12,18 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.leovanhaaren.brabotools.Brabotools;
 import com.leovanhaaren.brabotools.Config;
 
 public class DisplayManager {
 	
-    public List<DisplayTable> tables = new ArrayList<DisplayTable>();
+	private Brabotools plugin;
+    public List<DisplayTable> tables 	= new ArrayList<DisplayTable>();
 	
-	public DisplayManager() {}
+	public DisplayManager(Brabotools brabotools) {
+		plugin = brabotools;
+	}
 	
-	// Returns the DisplayTable object bound to this block
 	public DisplayTable getTableByBlock(Block block) {
 		for (DisplayTable table: tables) {
 			if(table.getBlock().equals(block)) {
@@ -29,7 +33,15 @@ public class DisplayManager {
 		return null;
 	}
 	
-	// Creates a new DisplayTable and binds it to the given block
+	public boolean isTableBlock(Block block) {
+		for (Integer blockid: Config.DISPLAY_TABLE_BLOCKS) {
+			if(blockid.equals(block.getTypeId())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void createDisplayTable(Player player, Block block) {
 		ItemStack item = player.getItemInHand();
 		if(item.getType() == Material.AIR) return;
@@ -43,17 +55,20 @@ public class DisplayManager {
 			addTable(displayTable);
 			
 			player.sendMessage(ChatColor.GOLD + Config.TABLE_CREATE_MESSAGE);
+			plugin.getLogger().info(Config.TABLE_CREATE_MESSAGE);
 		} else {
 			player.sendMessage(ChatColor.RED + Config.TABLE_ENCHANT_MESSAGE);
 		}
 	}
 	
 	public void removeDisplayTable(Player player, Block block) {
-		for (DisplayTable table: tables) {
+		Iterator<DisplayTable> tableiter = tables.iterator();
+		while(tableiter.hasNext()) {
+			DisplayTable table = tableiter.next();
 			if (table.getBlock().equals(block)) {
 				if(table.getPlayer().equals(player)) {
 					table.getItem().setPickupDelay(0);
-					removeTable(table);
+					tableiter.remove();
 					player.sendMessage(ChatColor.GOLD + "Display table removed!");
 				} else {
 					player.sendMessage(ChatColor.RED + "This table belongs to " + table.getPlayer().getDisplayName() + ChatColor.RED + "!");
@@ -66,7 +81,6 @@ public class DisplayManager {
 		removeTable(table);
 	}
 
-	// Returns amount of removed DisplayTables, and making the players able to pickup the items
 	public int removeAllTables() {
 		int i = 0;
 		for (DisplayTable table: tables) {

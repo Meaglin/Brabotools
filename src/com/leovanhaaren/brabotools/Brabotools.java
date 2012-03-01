@@ -45,7 +45,7 @@ public class Brabotools extends JavaPlugin {
 		pm.registerEvents(new PlayerListener(this), this);
 		
 		permissions 	= PermissionsResolver.resolve(this);
-		displaymanager 	= new DisplayManager();
+		displaymanager 	= new DisplayManager(this);
 		
 		Plugin plugin = pm.getPlugin("Zones");
 		if(plugin != null) zones = (Zones)plugin;

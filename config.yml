@@ -30,3 +30,10 @@ mobCatch:
         Villager: false
 displayTable:
     enabled: true
+    tableblocks:
+    - 1
+    - 35
+    - 41
+    - 42
+    - 44
+    - 89

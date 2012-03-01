@@ -72,7 +72,13 @@ public class DisplayTable {
 	public void setLocation(Location location) {
 		location = location.getBlock().getLocation();
 		Vector vec = location.toVector();
-		vec.add(new Vector(0.5, 1.1, 0.5));
+		
+		if(getBlock().getType() == Material.STEP) {
+			vec.add(new Vector(0.5, 0.6, 0.5));
+		} else {
+			vec.add(new Vector(0.5, 1.1, 0.5));
+		}
+		
 		location = vec.toLocation(location.getWorld());
 		this.location = location;
 		

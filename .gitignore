@@ -1,8 +1,8 @@
 # Ignore #
 ##########
 
-/bin
 /.project
 /.settings
 /.classpath
 /.build.jardesc
+/bin

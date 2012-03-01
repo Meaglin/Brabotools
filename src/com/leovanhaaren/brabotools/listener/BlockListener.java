@@ -46,20 +46,12 @@ public class BlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOW)
     public void onBlockBreak(BlockBreakEvent event) {
-    	Player player = event.getPlayer();
     	Block block = event.getBlock();
-    	
     	for (DisplayTable table: plugin.getDisplayManager().getDisplayTables()) {
 			try {
 	    		if(table.getBlock().equals(block)) {
-					if(table.getPlayer().equals(player)) {
-						table.getItem().setPickupDelay(0);
-						plugin.getDisplayManager().removeDisplayTable(table);
-						player.sendMessage(ChatColor.GOLD + "Table removed!");
-					} else {
-						event.setCancelled(true);
-						player.sendMessage(ChatColor.RED + "This table belongs to " + table.getPlayer().getDisplayName() + ChatColor.RED + "!");
-					}
+	    			event.setCancelled(true);
+	    			table.updatePosition();
 				}
 			} catch (Exception e) {}
     	}

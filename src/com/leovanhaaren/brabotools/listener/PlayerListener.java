@@ -27,16 +27,16 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-        	if(Config.DISPLAY_TABLE_ENABLED) return;
+        	if(!Config.DISPLAY_TABLE_ENABLED) return;
+    
+        	Block block 			= event.getClickedBlock();
+        	Player player 			= event.getPlayer();
+        	DisplayManager manager  = plugin.getDisplayManager();
         	
-        	Block block = event.getClickedBlock();
-        	Player player = event.getPlayer();
-        	
-	        if(block.getType().equals(Material.GOLD_BLOCK)) {
+	        if(manager.isTableBlock(block)) {
 		        if(player.isSneaking()) {
 		        	event.setCancelled(true);
-		        	DisplayManager manager = plugin.getDisplayManager();
-		    		
+
 		    		if(manager.getTableByBlock(block) == null) {
 		    			ItemStack item = player.getItemInHand();
 		    			if(item.getType() == Material.AIR) return;
