@@ -1,7 +1,9 @@
 package com.leovanhaaren.brabotools.util;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -11,34 +13,52 @@ import org.bukkit.util.Vector;
 import com.leovanhaaren.brabotools.inventory.PlayerItem;
 
 public class DisplayTable {
+	private int id;
 	private Item item;
-	private short data;
+	private int itemid;
+	private short itemdata;
 	private Block block;
 	private Player player;
 	private Location location;
-	private Material material;
 	private boolean chunkLoaded = false;
 
-	public DisplayTable(Player player, Block block, Material material, short data) {
-		setPlayer(player);
+	public DisplayTable(Player player, Block block, int itemid, short itemdata) {
+		setItemId(itemid);
+		setItemData(itemdata);
 		setBlock(block);
-		setMaterial(material);
-		setData(data);
+		setPlayer(player);
+		setLocation(block.getLocation());
 		setChunkLoaded(block.getWorld().isChunkLoaded(block.getChunk()));
 		
-		ItemStack item = new ItemStack(material, 1, getData());
-		Location location = block.getLocation();
+		ItemStack item = new ItemStack(itemid, 1, itemdata);
 		
 		if (isChunkLoaded()) {
-			setLocation(location);
 			setItem(location.getWorld().dropItem(getLocation(), item));
 			getItem().setPickupDelay(2500);
 			updatePosition();
-		} else {
-			this.location = location;
 		}
 		
 		PlayerItem.Remove(player.getInventory(), item);
+	}
+
+	public DisplayTable(int id, String w, double x, double y, double z, String player, int itemid, short itemdata) {
+		World world = Bukkit.getWorld(w);
+		Location location = new Location(world, x, y, z);
+		setId(id);
+		setItemId(itemid);
+		setItemData(itemdata);
+		setBlock(location.getBlock());
+		setPlayer(Bukkit.getPlayer(player));
+		setLocation(location);
+		setChunkLoaded(block.getWorld().isChunkLoaded(block.getChunk()));
+		
+		ItemStack item = new ItemStack(itemid, 1, itemdata);
+		
+		if (isChunkLoaded()) {
+			setItem(location.getWorld().dropItem(getLocation(), item));
+			getItem().setPickupDelay(2500);
+			updatePosition();
+		}
 	}
 
 	public void remove(){
@@ -54,7 +74,7 @@ public class DisplayTable {
 		if (isChunkLoaded()) {
 			if(item != null) item.remove();
 			
-			ItemStack stack = new ItemStack(getMaterial(), 1, getData());
+			ItemStack stack = new ItemStack(getItemId(), 1, getItemData());
 			setItem(getBlock().getLocation().getWorld().dropItem(getBlock().getLocation(), stack));
 			getItem().setPickupDelay(2500);
 			updatePosition();
@@ -65,7 +85,7 @@ public class DisplayTable {
 		return block;
 	}
 	
-	private void setBlock(Block block) {
+	public void setBlock(Block block) {
 		this.block = block;
 	}
 	
@@ -113,20 +133,28 @@ public class DisplayTable {
 		this.player = player;
 	}
 
-	public Material getMaterial() {
-		return material;
+	public int getItemId() {
+		return itemid;
 	}
 	
-	public void setMaterial(Material material) {
-		this.material = material;
+	public void setItemId(int itemid) {
+		this.itemid = itemid;
 	}
 
-	public short getData() {
-		return data;
+	public short getItemData() {
+		return itemdata;
 	}
 
-	public void setData(short data) {
-		this.data = data;
+	public void setItemData(short itemdata) {
+		this.itemdata = itemdata;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

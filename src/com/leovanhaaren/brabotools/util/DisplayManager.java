@@ -46,12 +46,12 @@ public class DisplayManager {
 		ItemStack item = player.getItemInHand();
 		if(item.getType() == Material.AIR) return;
 		
-		Material material 						= item.getType();
-		short data 								= item.getDurability();
+		int itemid 								= item.getTypeId();
+		short itemdata 							= item.getDurability();
 		Map<Enchantment, Integer> enchantment 	= item.getEnchantments();
 		
 		if(enchantment.size() == 0){
-			DisplayTable displayTable = new DisplayTable(player, block, material, data);
+			DisplayTable displayTable = new DisplayTable(player, block, itemid, itemdata);
 			addTable(displayTable);
 			
 			player.sendMessage(ChatColor.GOLD + Config.TABLE_CREATE_MESSAGE);
