@@ -18,7 +18,7 @@ public class DisplayTable {
 	private int 		id;
 	private World 		world;
 	private Block 		block;
-	private Player 		player;
+	private String 		player;
 	private int 		itemid;
 	private short 		itemdata;
 	private Item 		item;
@@ -27,16 +27,16 @@ public class DisplayTable {
 	public DisplayTable(Block block, Player player, int itemid, short itemdata) {
 		setWorld(block.getWorld().getName());
 		setBlock(block);
-		setPlayer(player);
+		setPlayer(player.getName());
 		setItemId(itemid);
 		setItemData(itemdata);
 		setChunkLoaded(getBlock().getWorld().isChunkLoaded(getBlock().getChunk()));
 		
 		ItemStack item = new ItemStack(itemid, 1, itemdata);
-		
 		if (isChunkLoaded()) {
 			setItem(getBlock().getWorld().dropItem(getBlock().getLocation(), item));
 			getItem().setPickupDelay(2500);
+			
 			updatePosition();
 			checkForDupedItem();
 		}
@@ -48,7 +48,7 @@ public class DisplayTable {
 		setId(id);
 		setWorld(world);
 		setBlock(x, y, z);
-		setPlayer(Bukkit.getPlayer(player));
+		setPlayer(player);
 		setItemId(itemid);
 		setItemData(itemdata);
 		setChunkLoaded(getBlock().getWorld().isChunkLoaded(getBlock().getChunk()));
@@ -57,6 +57,7 @@ public class DisplayTable {
 			ItemStack item = new ItemStack(getItemId(), 1, getItemData());
 			setItem(getBlock().getLocation().getWorld().dropItem(getBlock().getLocation(), item));
 			getItem().setPickupDelay(2500);
+			
 			updatePosition();
 			checkForDupedItem();
 		}
@@ -80,7 +81,7 @@ public class DisplayTable {
 	public void updatePosition() {
 		Vector vec = getBlock().getLocation().toVector();
 		
-		if(getBlock().getType() == Material.STEP) {
+		if (getBlock().getType() == Material.STEP) {
 			vec.add(new Vector(0.5, 0.6, 0.5));
 		} else {
 			vec.add(new Vector(0.5, 1.1, 0.5));
@@ -115,18 +116,15 @@ public class DisplayTable {
 	public void setItem(Item item) {
 		this.item = item;
 	}
-
-	public Player getPlayer() {
+	
+	public String getPlayer() {
 		return player;
 	}
 	
-	public void setPlayer(Player player) {
+	public void setPlayer(String player) {
 		this.player = player;
 	}
-	
-	public String getPlayerName() {
-		return player.getName();
-	}
+
 
 	public int getItemId() {
 		return itemid;

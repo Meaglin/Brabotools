@@ -11,6 +11,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import com.leovanhaaren.brabotools.Brabotools;
+import com.leovanhaaren.brabotools.util.DisplayManager;
 import com.leovanhaaren.brabotools.util.DisplayTable;
 
 public class BlockListener implements Listener {
@@ -32,12 +33,7 @@ public class BlockListener implements Listener {
 	    		if(table.getBlock().equals(block)) {
 					event.setCancelled(true);
 					
-					if(table.getPlayer().equals(player)) {
-						player.sendMessage(ChatColor.RED + "Cannot place blocks on your own Display Table!");
-					} else {
-						player.sendMessage(ChatColor.RED + "Cannot place blocks on " + table.getPlayer().getDisplayName() + ChatColor.RED + "'s Display Table!");
-					}
-					
+					player.sendMessage(ChatColor.RED + plugin.getConfigManager().TABLE_PLACE_BLOCK_MESSAGE);
 					table.updatePosition();
 				}
 			} catch (Exception e) {}
@@ -47,11 +43,14 @@ public class BlockListener implements Listener {
 	@EventHandler(priority = EventPriority.LOW)
     public void onBlockBreak(BlockBreakEvent event) {
     	Block block = event.getBlock();
-    	for (DisplayTable table: plugin.getDisplayManager().getDisplayTables()) {
+    	Player player = event.getPlayer();
+    	DisplayManager manager = plugin.getDisplayManager();
+    	
+    	for (DisplayTable table: manager.getDisplayTables()) {
 			try {
 	    		if(table.getBlock().equals(block)) {
-	    			event.setCancelled(true);
-	    			table.updatePosition();
+	    			player.sendMessage(ChatColor.RED + plugin.getConfigManager().TABLE_REMOVE_MESSAGE);
+	    			manager.removeDisplayTable(player, block);
 				}
 			} catch (Exception e) {}
     	}

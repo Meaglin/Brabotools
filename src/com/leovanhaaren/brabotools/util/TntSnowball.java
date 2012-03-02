@@ -5,17 +5,22 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.leovanhaaren.brabotools.Config;
+import com.leovanhaaren.brabotools.Brabotools;
 import com.leovanhaaren.brabotools.inventory.PlayerItem;
 
 public class TntSnowball {
+	
+	private Brabotools plugin;
 
-	public static void Explode(Player player, Entity entity) {
-		if(Config.TNT_SNOWBALL_ENABLED) {
-	        if(PlayerItem.Remove(player.getInventory(), new ItemStack(Material.TNT, 1))){
-	    	    entity.getWorld().createExplosion(entity.getLocation(), Config.TNT_SNOWBALL_RANGE);
-	        }
-		}
+	public TntSnowball(Brabotools brabotools) {
+		plugin = brabotools;
+	}
+
+	public void Explode(Player player, Entity entity) {		
+		if (!plugin.getConfigManager().TNT_SNOWBALL_ENABLED) return;
+		
+		if (PlayerItem.Remove(player.getInventory(), new ItemStack(Material.TNT, 1)))
+			entity.getWorld().createExplosion(entity.getLocation(), plugin.getConfigManager().TNT_SNOWBALL_RANGE);
 	}
 	
 }

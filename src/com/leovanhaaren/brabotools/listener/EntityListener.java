@@ -40,7 +40,7 @@ public class EntityListener implements Listener {
             if((shooter instanceof Player)) {
                 Player player = (Player) shooter;
                 if(plugin.canUse(player, "tntSnowball")) {
-                	TntSnowball.Explode(player, entity);
+                	new TntSnowball(plugin).Explode(player, entity);
                 }
             }
         }

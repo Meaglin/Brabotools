@@ -21,9 +21,8 @@ public class WorldListener implements Listener {
     public void onChunkLoad(ChunkLoadEvent event) {
 		for (DisplayTable table : plugin.getDisplayManager().getDisplayTables()) {
 			try {
-				if (event.getChunk().equals(table.getBlock().getChunk())) {
+				if (event.getChunk().equals(table.getBlock().getChunk()))
 					table.respawn();
-				}
 			} catch (Exception e) {}
 		}
     }
@@ -32,9 +31,8 @@ public class WorldListener implements Listener {
 	public void onChunkUnload(ChunkUnloadEvent event) {
 		for (DisplayTable table : plugin.getDisplayManager().getDisplayTables()) {
 			try {
-				if (event.getChunk().equals(table.getBlock().getChunk())) {
+				if (event.getChunk().equals(table.getBlock().getChunk()))
 					table.remove();
-				}
 			} catch (Exception e) {}
 		}
 	}

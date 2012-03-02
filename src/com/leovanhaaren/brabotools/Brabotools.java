@@ -2,6 +2,7 @@ package com.leovanhaaren.brabotools;
 
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -25,6 +26,7 @@ import com.zones.permissions.PermissionsResolver;
 public class Brabotools extends JavaPlugin {
 	
     public static Logger      	logger			= Logger.getLogger("Minecraft");
+    private ConfigManager 		config 			= null;
     private Database			database		= null;
     private DisplayManager 		manager			= null;
     private Permissions 		permissions 	= null;
@@ -40,7 +42,7 @@ public class Brabotools extends JavaPlugin {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		logger.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is now enabled.");
 		
-		Config config = new Config(this);
+		config = new ConfigManager(this);
 		config.loadConfig();
 		
 		PluginManager pm = getServer().getPluginManager();
@@ -62,7 +64,13 @@ public class Brabotools extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String args[]) {
 		if (cmd.getName().equals("reloadtables")) {
 			if (args.length > 0) return false;
+			
+			Player player = (Player) sender;
+			if (!canUse(player, "displayTable")) return false;
+			
 			manager.reloadTableItems();
+			player.sendMessage(ChatColor.GOLD + "Display tables reloaded.");
+			return true;
 		}
 		return false;
 	}
@@ -80,6 +88,10 @@ public class Brabotools extends JavaPlugin {
 		}
 		return true;
 	}
+	
+    public ConfigManager getConfigManager() {
+        return config;
+    }
 	
     public Database getMysqlDatabase() {
         return database;

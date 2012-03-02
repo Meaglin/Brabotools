@@ -82,7 +82,7 @@ public class Database {
             st.setInt(3, (int)  table.getBlock().getLocation().getX());
             st.setInt(4, (int)  table.getBlock().getLocation().getY());
             st.setInt(5, (int)  table.getBlock().getLocation().getZ());
-            st.setString(6, 	table.getPlayerName());
+            st.setString(6, 	table.getPlayer());
             st.setInt(7, 		table.getItemId());
             st.setShort(8, 		table.getItemData());
             st.execute();
