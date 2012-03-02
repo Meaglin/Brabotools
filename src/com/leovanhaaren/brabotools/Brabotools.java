@@ -3,6 +3,7 @@ package com.leovanhaaren.brabotools;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -85,6 +86,13 @@ public class Brabotools extends JavaPlugin {
 	public boolean canHit(Player player, Entity entity) {
 		if(zones != null) {
 			return zones.getApi().canHit(player,entity);
+		}
+		return true;
+	}
+	
+	public boolean canHit(Player player, Block block) {
+		if(zones != null) {
+			return zones.getApi().canHit(player,block);
 		}
 		return true;
 	}

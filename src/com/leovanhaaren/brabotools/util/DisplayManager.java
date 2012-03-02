@@ -57,7 +57,7 @@ public class DisplayManager {
         }
     }
 
-    public void removeDisplayTable(Player player, Block block) {
+    public boolean removeDisplayTable(Player player, Block block) {
         synchronized (tables) {
             Iterator<DisplayTable> tableiter = tables.iterator();
             while (tableiter.hasNext()) {
@@ -66,16 +66,18 @@ public class DisplayManager {
                 
                 if (!table.getPlayer().equals(player.getName())) {
                     player.sendMessage(ChatColor.RED + plugin.getConfigManager().TABLE_NOT_OWNER_MESSAGE);
-                    continue;
+                    return false;
                 }
                 
-                if (!plugin.getMysqlDatabase().delete(table)) return;
+                if (!plugin.getMysqlDatabase().delete(table)) break;
 
                 table.getItem().setPickupDelay(0);
                 tableiter.remove();
                 player.sendMessage(ChatColor.GOLD + plugin.getConfigManager().TABLE_REMOVE_MESSAGE);
+                return true;
             }
         }
+        return false;
     }
 
     public List<DisplayTable> getDisplayTables() {

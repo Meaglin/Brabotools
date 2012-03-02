@@ -11,7 +11,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import com.leovanhaaren.brabotools.Brabotools;
-import com.leovanhaaren.brabotools.util.DisplayManager;
 import com.leovanhaaren.brabotools.util.DisplayTable;
 
 public class BlockListener implements Listener {
@@ -44,16 +43,19 @@ public class BlockListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
     	Block block = event.getBlock();
     	Player player = event.getPlayer();
-    	DisplayManager manager = plugin.getDisplayManager();
-    	
-    	for (DisplayTable table: manager.getDisplayTables()) {
-			try {
-	    		if(table.getBlock().equals(block)) {
-	    			player.sendMessage(ChatColor.RED + plugin.getConfigManager().TABLE_REMOVE_MESSAGE);
-	    			manager.removeDisplayTable(player, block);
-				}
-			} catch (Exception e) {}
+    	Boolean isBlock = false;
+		
+    	for (DisplayTable table: plugin.getDisplayManager().getDisplayTables()) {
+    		if(table.getBlock().equals(block)) {
+    			isBlock = true;
+    			break;
+    		}
     	}
+    	
+		if(isBlock) {
+			event.setCancelled(true);
+			plugin.getDisplayManager().removeDisplayTable(player, block);
+		}
     }
     
 }

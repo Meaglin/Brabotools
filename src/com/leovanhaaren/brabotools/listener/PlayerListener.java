@@ -35,6 +35,7 @@ public class PlayerListener implements Listener {
 			if (!player.isSneaking()) return;
 
 			if (!plugin.canUse(player, "displayTable")) return;
+			if (!plugin.canHit(player, block)) return;
 
 			if (manager.getTableByBlock(block) == null) {
 				ItemStack item = player.getItemInHand();

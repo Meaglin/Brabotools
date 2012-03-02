@@ -41,12 +41,12 @@ public class ConfigManager {
             eggType.setEnabled(enabled);
         }
         
-    	TNT_SNOWBALL_ENABLED 	= config.getBoolean("tntSnowball.enabled");
-    	TNT_SNOWBALL_RANGE 	 	= config.getInt("tntSnowball.range");
+    	TNT_SNOWBALL_ENABLED 	= config.getBoolean(    "tntSnowball.enabled");
+    	TNT_SNOWBALL_RANGE 	 	= config.getInt(        "tntSnowball.range");
     	
-    	MOBCATCH_ENABLED 	 	= config.getBoolean("mobCatch.enabled");
+    	MOBCATCH_ENABLED 	 	= config.getBoolean(    "mobCatch.enabled");
     	
-    	DISPLAY_TABLE_ENABLED 	= config.getBoolean("displayTable.enabled");
+    	DISPLAY_TABLE_ENABLED 	= config.getBoolean(    "displayTable.enabled");
         DISPLAY_TABLE_BLOCKS 	= config.getIntegerList("displayTable.tableblocks");
 	}
 
