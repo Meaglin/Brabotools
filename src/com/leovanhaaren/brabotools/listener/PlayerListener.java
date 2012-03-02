@@ -17,47 +17,50 @@ import com.leovanhaaren.brabotools.util.DisplayManager;
 import com.leovanhaaren.brabotools.util.DisplayTable;
 
 public class PlayerListener implements Listener {
-	
-	private Brabotools plugin;
 
-	public PlayerListener(Brabotools brabotools) {
-		plugin = brabotools;
-	}
-	
+    private Brabotools plugin;
+
+    public PlayerListener(Brabotools brabotools) {
+        plugin = brabotools;
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-        	if(!Config.DISPLAY_TABLE_ENABLED) return;
-        	Block block 			= event.getClickedBlock();
-        	Player player 			= event.getPlayer();
-        	DisplayManager manager  = plugin.getDisplayManager();
-        	
-        	if(player.isSneaking()) {
-    		
-	    		if(manager.getTableByBlock(block) == null) {
-		    		ItemStack item = player.getItemInHand();
-		    		if(item.getType() == Material.AIR) return;
-	    			if(!manager.isTableBlock(block)) return;
-	    			
-		    		manager.createDisplayTable(player, block);
-	    		} else {
-	    			manager.removeDisplayTable(player, block);
-	    		}
-	    		event.setCancelled(true);
-        	}
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (!Config.DISPLAY_TABLE_ENABLED) {
+                return;
+            }
+            Block block = event.getClickedBlock();
+            Player player = event.getPlayer();
+            DisplayManager manager = plugin.getDisplayManager();
+
+            if (!player.isSneaking()) return;
+
+            if (manager.getTableByBlock(block) == null) {
+                ItemStack item = player.getItemInHand();
+                if (item.getType() == Material.AIR) return;
+
+                if (!manager.isTableBlock(block)) return;
+
+                manager.createDisplayTable(player, block);
+            } else {
+                manager.removeDisplayTable(player, block);
+            }
+            event.setCancelled(true);
+
         }
     }
-    
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-		for (DisplayTable table: plugin.getDisplayManager().getDisplayTables()) {
-			try {
-				if(table.getItem().equals(event.getItem())){
-					table.getItem().setPickupDelay(2500);
-					event.setCancelled(true);
-				}
-			} catch (Exception e) {}
-		}
+        for (DisplayTable table : plugin.getDisplayManager().getDisplayTables()) {
+            try {
+                if (table.getItem().equals(event.getItem())) {
+                    table.getItem().setPickupDelay(2500);
+                    event.setCancelled(true);
+                }
+            } catch (Exception e) {
+            }
+        }
     }
-    
 }
