@@ -1,10 +1,12 @@
 package com.leovanhaaren.brabotools.util;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,61 +15,55 @@ import org.bukkit.util.Vector;
 import com.leovanhaaren.brabotools.inventory.PlayerItem;
 
 public class DisplayTable {
-	private int id;
-	private Item item;
-	private int itemid;
-	private short itemdata;
-	private Block block;
-	private Player player;
-	private Location location;
-	private boolean chunkLoaded = false;
+	private int 		id;
+	private World 		world;
+	private Block 		block;
+	private Player 		player;
+	private int 		itemid;
+	private short 		itemdata;
+	private Item 		item;
+	private boolean 	chunkLoaded = false;
 
-	public DisplayTable(Player player, Block block, int itemid, short itemdata) {
-		setItemId(itemid);
-		setItemData(itemdata);
+	public DisplayTable(Block block, Player player, int itemid, short itemdata) {
+		setWorld(block.getWorld().getName());
 		setBlock(block);
 		setPlayer(player);
-		setLocation(block.getLocation());
-		setChunkLoaded(block.getWorld().isChunkLoaded(block.getChunk()));
+		setItemId(itemid);
+		setItemData(itemdata);
+		setChunkLoaded(getBlock().getWorld().isChunkLoaded(getBlock().getChunk()));
 		
 		ItemStack item = new ItemStack(itemid, 1, itemdata);
 		
 		if (isChunkLoaded()) {
-			setItem(location.getWorld().dropItem(getLocation(), item));
+			setItem(getBlock().getWorld().dropItem(getBlock().getLocation(), item));
 			getItem().setPickupDelay(2500);
 			updatePosition();
+			checkForDupedItem();
 		}
 		
 		PlayerItem.Remove(player.getInventory(), item);
 	}
 
-	public DisplayTable(int id, String w, double x, double y, double z, String player, int itemid, short itemdata) {
-		World world = Bukkit.getWorld(w);
-		Location location = new Location(world, x, y, z);
+	public DisplayTable(int id, String world, int x, int y, int z, String player, int itemid, short itemdata) {	
 		setId(id);
+		setWorld(world);
+		setBlock(x, y, z);
+		setPlayer(Bukkit.getPlayer(player));
 		setItemId(itemid);
 		setItemData(itemdata);
-		setBlock(location.getBlock());
-		setPlayer(Bukkit.getPlayer(player));
-		setLocation(location);
-		setChunkLoaded(block.getWorld().isChunkLoaded(block.getChunk()));
-		
-		ItemStack item = new ItemStack(itemid, 1, itemdata);
+		setChunkLoaded(getBlock().getWorld().isChunkLoaded(getBlock().getChunk()));
 		
 		if (isChunkLoaded()) {
-			setItem(location.getWorld().dropItem(getLocation(), item));
+			ItemStack item = new ItemStack(getItemId(), 1, getItemData());
+			setItem(getBlock().getLocation().getWorld().dropItem(getBlock().getLocation(), item));
 			getItem().setPickupDelay(2500);
 			updatePosition();
+			checkForDupedItem();
 		}
 	}
 
 	public void remove(){
 		item.remove();
-	}
-
-	public void updatePosition() {
-		item.teleport(location);
-		item.setVelocity(new Vector(0, 0.1, 0));
 	}
 	
 	public void respawn() {
@@ -80,18 +76,9 @@ public class DisplayTable {
 			updatePosition();
 		}
 	}
-
-	public Block getBlock() {
-		return block;
-	}
 	
-	public void setBlock(Block block) {
-		this.block = block;
-	}
-	
-	public void setLocation(Location location) {
-		location = location.getBlock().getLocation();
-		Vector vec = location.toVector();
+	public void updatePosition() {
+		Vector vec = getBlock().getLocation().toVector();
 		
 		if(getBlock().getType() == Material.STEP) {
 			vec.add(new Vector(0.5, 0.6, 0.5));
@@ -99,14 +86,18 @@ public class DisplayTable {
 			vec.add(new Vector(0.5, 1.1, 0.5));
 		}
 		
-		location = vec.toLocation(location.getWorld());
-		this.location = location;
-		
-		if (item != null) item.teleport(location);
+		Location newlocation = vec.toLocation(getBlock().getWorld());
+		if (item != null) item.teleport(newlocation);
+		item.setVelocity(new Vector(0, 0.1, 0));
 	}
-
-	public Location getLocation() {
-		return location;
+	
+	public void checkForDupedItem() {
+		Chunk chunk = getBlock().getChunk();
+		for (Entity entity : chunk.getEntities()) {
+			if (entity instanceof Item && entity.getLocation().equals(item.getLocation()) && !entity.equals(item)) {
+				entity.remove();
+			}
+		}
 	}
 	
 	public void setChunkLoaded(boolean chunkLoaded) {
@@ -132,6 +123,10 @@ public class DisplayTable {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
+	
+	public String getPlayerName() {
+		return player.getName();
+	}
 
 	public int getItemId() {
 		return itemid;
@@ -155,6 +150,26 @@ public class DisplayTable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public Block getBlock() {
+		return block;
+	}
+
+	public void setBlock(Block block) {
+		this.block = block;
+	}
+
+	private void setBlock(int x, int y, int z) {
+		this.block = getWorld().getBlockAt(x, y, z);
+	}
+	
+	public World getWorld() {
+		return world;
+	}
+
+	public void setWorld(String world) {
+		this.world = Bukkit.getWorld(world);
 	}
 
 }

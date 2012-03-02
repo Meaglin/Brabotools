@@ -4,9 +4,6 @@ version: 0.1
 author: Leo
 description: Plugin for catching mobs with eggs.
 commands:
-    table:
-        description: Command for creating a displaytable!
-        usage: /<command>
-    removetables:
-        description: Command for removing all displaytables!
+    reloadtables:
+        description: Command for reloading all Display Tables!
         usage: /<command>

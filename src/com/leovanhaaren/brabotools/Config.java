@@ -31,7 +31,7 @@ public class Config {
 		plugin.saveConfig();
 		
         for (CaptureType eggType : CaptureType.values()) {
-                String creatureName = eggType.getCreatureType().getName();
+                String creatureName = eggType.getEntityType().getName();
                 boolean enabled = config.getBoolean("mobCatch.mobs." + creatureName);
 	            eggType.setEnabled(enabled);
         }

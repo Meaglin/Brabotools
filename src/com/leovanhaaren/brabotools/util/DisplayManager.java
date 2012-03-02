@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -51,11 +52,11 @@ public class DisplayManager {
 		Map<Enchantment, Integer> enchantment 	= item.getEnchantments();
 		
 		if(enchantment.size() == 0){
-			DisplayTable displayTable = new DisplayTable(player, block, itemid, itemdata);
-			addTable(displayTable);
+			DisplayTable table = new DisplayTable(block, player, itemid, itemdata);
+			addTable(table);
+			plugin.getMysqlDatabase().save(table);
 			
 			player.sendMessage(ChatColor.GOLD + Config.TABLE_CREATE_MESSAGE);
-			plugin.getLogger().info(Config.TABLE_CREATE_MESSAGE);
 		} else {
 			player.sendMessage(ChatColor.RED + Config.TABLE_ENCHANT_MESSAGE);
 		}
@@ -67,18 +68,17 @@ public class DisplayManager {
 			DisplayTable table = tableiter.next();
 			if (table.getBlock().equals(block)) {
 				if(table.getPlayer().equals(player)) {
+					if(!plugin.getMysqlDatabase().delete(table)) return;
+					
 					table.getItem().setPickupDelay(0);
 					tableiter.remove();
-					player.sendMessage(ChatColor.GOLD + "Display table removed!");
+					
+					player.sendMessage(ChatColor.GOLD + "Display Table removed!");
 				} else {
 					player.sendMessage(ChatColor.RED + "This table belongs to " + table.getPlayer().getDisplayName() + ChatColor.RED + "!");
 				}
 			}
 		}
-	}
-	
-	public void removeDisplayTable(DisplayTable table) {
-		removeTable(table);
 	}
 
 	public int removeAllTables() {
@@ -92,17 +92,39 @@ public class DisplayManager {
 	}
 
 	public List<DisplayTable> getDisplayTables() {
-		return this.tables;
+		return tables;
 	}
 	
-	public void addTable(DisplayTable displaytable) {
-		tables.add(displaytable);
+	public void addTable(DisplayTable table) {
+		tables.add(table);
 	}
 	
-	public void removeTable(DisplayTable displaytable) {
+	public void removeTable(DisplayTable table) {
 		try {
-			tables.remove(displaytable);
+			tables.remove(table);
 		} catch (Exception e) {}
+	}
+
+	public void loadTables() {
+		for(World world : plugin.getServer().getWorlds()) {
+			List<DisplayTable> tables = plugin.getMysqlDatabase().getTables(world.getName());
+			
+			for(DisplayTable table : tables) {
+				this.tables.add(table);
+			}
+		}
+	}
+
+	public void unloadTables() {
+   		for(DisplayTable table : getDisplayTables()){
+   			table.remove();
+   		}
+	}
+	
+	public void reloadTableItems() {
+   		for(DisplayTable table : getDisplayTables()){
+   			table.respawn();
+   		}
 	}
 
 }

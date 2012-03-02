@@ -22,7 +22,7 @@ public class CaptureManager {
 	                        e.remove();
 	                        ItemStack item = new ItemStack(383, 1, (short) eggType.getId());
 	                        p.getWorld().dropItem(e.getLocation(), item);
-	                        String mob = eggType.getCreatureType().getName();
+	                        String mob = eggType.getEntityType().getName();
 	                        p.sendMessage(ChatColor.GOLD + mob + " was caught.");
 	                    	p.updateInventory();
 	                        break;

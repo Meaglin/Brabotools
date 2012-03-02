@@ -28,23 +28,22 @@ public class PlayerListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
         	if(!Config.DISPLAY_TABLE_ENABLED) return;
-    
         	Block block 			= event.getClickedBlock();
         	Player player 			= event.getPlayer();
         	DisplayManager manager  = plugin.getDisplayManager();
         	
-	        if(manager.isTableBlock(block)) {
-		        if(player.isSneaking()) {
-		        	event.setCancelled(true);
-
-		    		if(manager.getTableByBlock(block) == null) {
-		    			ItemStack item = player.getItemInHand();
-		    			if(item.getType() == Material.AIR) return;
-		    			manager.createDisplayTable(player, block);
-		    		} else {
-		    			manager.removeDisplayTable(player, block);
-		    		}
-		        }
+        	if(player.isSneaking()) {
+    		
+	    		if(manager.getTableByBlock(block) == null) {
+		    		ItemStack item = player.getItemInHand();
+		    		if(item.getType() == Material.AIR) return;
+	    			if(!manager.isTableBlock(block)) return;
+	    			
+		    		manager.createDisplayTable(player, block);
+	    		} else {
+	    			manager.removeDisplayTable(player, block);
+	    		}
+	    		event.setCancelled(true);
         	}
         }
     }

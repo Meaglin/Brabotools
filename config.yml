@@ -12,21 +12,23 @@ mobCatch:
         Spider: false
         Zombie: true
         Slime: true
-        Ghast: false
+        Ghast: true
         PigZombie: true
         Enderman: true
         CaveSpider: false
         Silverfish: true
         Blaze: true
-        LavaSlime: false
+        LavaSlime: true
         Pig: true
         Sheep: true
         Cow: true
         Chicken: true
-        Squid: false
+        Squid: true
         Wolf: true
         MushroomCow: false
         SnowMan: false
+        Ozelot: true
+        VillagerGolem: false
         Villager: false
 displayTable:
     enabled: true
@@ -36,4 +38,8 @@ displayTable:
     - 41
     - 42
     - 44
+    - 57
     - 89
+    - 98
+    - 123
+    - 124

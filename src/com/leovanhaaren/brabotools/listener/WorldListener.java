@@ -23,7 +23,6 @@ public class WorldListener implements Listener {
 			try {
 				if (event.getChunk().equals(table.getBlock().getChunk())) {
 					table.respawn();
-					plugin.getLogger().info("Display Table unloaded because of chunk inactivity.");
 				}
 			} catch (Exception e) {}
 		}
@@ -35,7 +34,6 @@ public class WorldListener implements Listener {
 			try {
 				if (event.getChunk().equals(table.getBlock().getChunk())) {
 					table.remove();
-					plugin.getLogger().info("Display Table loaded because of chunk activity.");
 				}
 			} catch (Exception e) {}
 		}

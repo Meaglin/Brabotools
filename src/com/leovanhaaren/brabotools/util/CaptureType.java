@@ -1,38 +1,40 @@
 package com.leovanhaaren.brabotools.util;
 
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.CreatureType;
 
 public enum CaptureType {
-    CREEPER(50, CreatureType.CREEPER),
-    SKELETON(51, CreatureType.SKELETON),
-    SPIDER(52, CreatureType.SPIDER),
-    ZOMBIE(54, CreatureType.ZOMBIE),
-    SLIME(55, CreatureType.SLIME),
-    GHAST(56, CreatureType.GHAST),
-    PIG_ZOMBIE(57, CreatureType.PIG_ZOMBIE),
-    ENDERMAN(58, CreatureType.ENDERMAN),
-    CAVE_SPIDER(59, CreatureType.CAVE_SPIDER),
-    SILVERFISH(60, CreatureType.SILVERFISH),
-    BLAZE(61, CreatureType.BLAZE),
-    MAGMA_CUBE(62, CreatureType.MAGMA_CUBE),
-    PIG(90, CreatureType.PIG),
-    SHEEP(91, CreatureType.SHEEP),
-    COW(92, CreatureType.COW),
-    CHICKEN(93, CreatureType.CHICKEN),
-    SQUID(94, CreatureType.SQUID),
-    WOLF(95, CreatureType.WOLF),
-    MUSHROOM_COW(96, CreatureType.MUSHROOM_COW),
-    SNOWMAN(97, CreatureType.SNOWMAN),
-    VILLAGER(120, CreatureType.VILLAGER);
+    CREEPER(50, EntityType.CREEPER),
+    SKELETON(51, EntityType.SKELETON),
+    SPIDER(52, EntityType.SPIDER),
+    ZOMBIE(54, EntityType.ZOMBIE),
+    SLIME(55, EntityType.SLIME),
+    GHAST(56, EntityType.GHAST),
+    PIG_ZOMBIE(57, EntityType.PIG_ZOMBIE),
+    ENDERMAN(58, EntityType.ENDERMAN),
+    CAVE_SPIDER(59, EntityType.CAVE_SPIDER),
+    SILVERFISH(60, EntityType.SILVERFISH),
+    BLAZE(61, EntityType.BLAZE),
+    MAGMA_CUBE(62, EntityType.MAGMA_CUBE),
+    PIG(90, EntityType.PIG),
+    SHEEP(91, EntityType.SHEEP),
+    COW(92, EntityType.COW),
+    CHICKEN(93, EntityType.CHICKEN),
+    SQUID(94, EntityType.SQUID),
+    WOLF(95, EntityType.WOLF),
+    MUSHROOM_COW(96, EntityType.MUSHROOM_COW),
+    SNOWMAN(97, EntityType.SNOWMAN),
+    OCELOT(98, EntityType.OCELOT),
+    IRONGOLEM(99, EntityType.IRON_GOLEM),
+    VILLAGER(120, EntityType.VILLAGER);
 
      private int id;
-     private CreatureType creatureType;
+     private EntityType entitytype;
      private boolean enabled = false;
 
-     private CaptureType(int id, CreatureType creatureType) {
+     private CaptureType(int id, EntityType entitytype) {
          this.id = id;
-         this.creatureType = creatureType;
+         this.entitytype = entitytype;
      }
 
      public int getId() {
@@ -40,11 +42,11 @@ public enum CaptureType {
      }
 
      public boolean isInstance(LivingEntity livingEntity) {
-         return creatureType.getEntityClass().isInstance(livingEntity);
+         return entitytype.getEntityClass().isInstance(livingEntity);
      }
 
-     public CreatureType getCreatureType() {
-         return creatureType;
+     public EntityType getEntityType() {
+         return entitytype;
      }
 
      public void setEnabled(boolean e) {
