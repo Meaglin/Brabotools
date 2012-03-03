@@ -17,8 +17,6 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import com.leovanhaaren.brabotools.Brabotools;
-import com.leovanhaaren.brabotools.util.CaptureManager;
-import com.leovanhaaren.brabotools.util.DisplayManager;
 import com.leovanhaaren.brabotools.util.DisplayTable;
 import com.leovanhaaren.brabotools.util.TntSnowball;
 
@@ -31,8 +29,8 @@ public class EntityListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
-    public void onProjectileHit(ProjectileHitEvent e) {
-		Entity entity = e.getEntity();
+    public void onProjectileHit(ProjectileHitEvent event) {
+		Entity entity = event.getEntity();
 		
         if ((entity instanceof Snowball)) {
         	Snowball snowball = (Snowball) entity;
@@ -48,6 +46,8 @@ public class EntityListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.LOW)
 	public void OnEntityDamage(EntityDamageEvent event) {
+        if (event.isCancelled()) return;
+        
 		if ((event instanceof EntityDamageByEntityEvent)) {
 			EntityDamageByEntityEvent entity = (EntityDamageByEntityEvent)event;
 			
@@ -61,7 +61,7 @@ public class EntityListener implements Listener {
 		            	Player player = (Player) shooter;
 		            	if(plugin.canUse(player, "mobCatch")) {
 		            		if(plugin.canHit(player, target)) {
-		            			CaptureManager.Catch(player, target);
+		            			plugin.getCaptureManager().Catch(player, target);
 		            		} else {
 		            			event.setCancelled(true);
 			            	}
@@ -77,11 +77,10 @@ public class EntityListener implements Listener {
 	@EventHandler(priority = EventPriority.LOW)
 	public void onEntityExplode(EntityExplodeEvent event) {
         if (event.isCancelled()) return;
-        List<Block> blocks = event.blockList();
-
-        DisplayManager manager = plugin.getDisplayManager();
         
-    	for (DisplayTable table: manager.getDisplayTables()) {
+        List<Block> blocks = event.blockList();
+        
+    	for (DisplayTable table: plugin.getDisplayManager().getDisplayTables()) {
     		for (Block block: blocks) {
 				try {
 		    		if(table.getBlock().equals(block)) {
@@ -95,6 +94,8 @@ public class EntityListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.LOW)
     public void onItemDespawn(ItemDespawnEvent event) {
+        if (event.isCancelled()) return;
+        
 		for (DisplayTable table:  plugin.getDisplayManager().getDisplayTables()) {
 			try {
 				if(table.getItem().equals(event.getEntity())){

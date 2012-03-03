@@ -17,6 +17,10 @@ public class ConfigManager {
 	public boolean 		DISPLAY_TABLE_ENABLED 					= 	false;
 	public List<Integer> DISPLAY_TABLE_BLOCKS 					= 	null;
 	
+	public final String MOB_CAUGHT_MESSAGE 						= 	" was caught.";
+	public final String MOB_COST_MESSAGE 						= 	"Sorry, gold nuggets are required.";
+	public final String MOB_DISABLED_MESSAGE 					= 	"Sorry, that mob can't be caught.";
+	
 	public final String TABLE_CREATE_MESSAGE 					= 	"Display Table created!";
 	public final String TABLE_REMOVE_MESSAGE 					= 	"Display Table removed!";
 	public final String TABLE_PRESENT_MESSAGE 					= 	"There's already a Display Table there!";

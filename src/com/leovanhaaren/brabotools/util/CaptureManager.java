@@ -7,25 +7,32 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.leovanhaaren.brabotools.Brabotools;
 import com.leovanhaaren.brabotools.inventory.PlayerItem;
 
 public class CaptureManager {
+	
+    private Brabotools plugin;
+
+    public CaptureManager(Brabotools brabotools) {
+        plugin = brabotools;
+    }
 
     @SuppressWarnings("deprecation")
-    public static void Catch(Player p, LivingEntity e) {
+    public void Catch(Player p, LivingEntity e) {
         for (CaptureType eggType : CaptureType.values()) {
             if (!eggType.isInstance(e)) {
                 continue;
             }
             
             if (!eggType.isEnabled()) {
-                p.sendMessage(ChatColor.RED + "Sorry, that mob can't be caught.");
+                p.sendMessage(ChatColor.RED + plugin.getConfigManager().MOB_DISABLED_MESSAGE);
                 break;
             }
             
             ItemStack cost = new ItemStack(371, 1);
             if (!PlayerItem.Remove(p.getInventory(), cost)) {
-                p.sendMessage(ChatColor.RED + "Sorry, gold nuggets are required.");
+                p.sendMessage(ChatColor.RED + plugin.getConfigManager().MOB_COST_MESSAGE);
                 break;
             }
             
@@ -34,16 +41,16 @@ public class CaptureManager {
                 ItemStack item = new ItemStack(383, 1, (short) eggType.getId());
                 p.getWorld().dropItem(e.getLocation(), item);
                 String mob = eggType.getEntityType().getName();
-                p.sendMessage(ChatColor.GOLD + mob + " was caught.");
+                p.sendMessage(ChatColor.GOLD + mob + plugin.getConfigManager().MOB_CAUGHT_MESSAGE);
                 p.updateInventory();
                 break;
             }
         }
     }
 
-    public static boolean getSucces() {
+    public boolean getSucces() {
         Random r = new Random();
-        if (r.nextDouble() > (0.8)) {
+        if (r.nextDouble() > (0.5)) {
             return true;
         }
         return false;

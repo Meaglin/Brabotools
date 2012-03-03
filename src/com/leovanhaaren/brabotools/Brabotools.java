@@ -15,9 +15,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.leovanhaaren.brabotools.listener.BlockListener;
 import com.leovanhaaren.brabotools.listener.EntityListener;
+import com.leovanhaaren.brabotools.listener.PistonListener;
 import com.leovanhaaren.brabotools.listener.PlayerListener;
 import com.leovanhaaren.brabotools.listener.WorldListener;
 import com.leovanhaaren.brabotools.persistence.Database;
+import com.leovanhaaren.brabotools.util.CaptureManager;
 import com.leovanhaaren.brabotools.util.DisplayManager;
 import com.zones.Zones;
 import com.zones.permissions.Permissions;
@@ -29,6 +31,7 @@ public class Brabotools extends JavaPlugin {
     public static Logger      	logger			= Logger.getLogger("Minecraft");
     private ConfigManager 		config 			= null;
     private Database			database		= null;
+	private CaptureManager 		capture			= null;
     private DisplayManager 		manager			= null;
     private Permissions 		permissions 	= null;
     private Zones 				zones 			= null;
@@ -49,10 +52,12 @@ public class Brabotools extends JavaPlugin {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new WorldListener(this), this);
 		pm.registerEvents(new BlockListener(this), this);
+		pm.registerEvents(new PistonListener(this), this);
 		pm.registerEvents(new EntityListener(this), this);
 		pm.registerEvents(new PlayerListener(this), this);
 		
 		database 		= new Database(this);
+		capture 		= new CaptureManager(this);
 		manager 		= new DisplayManager(this);
 		permissions 	= PermissionsResolver.resolve(this);
 		
@@ -103,6 +108,10 @@ public class Brabotools extends JavaPlugin {
 	
     public Database getMysqlDatabase() {
         return database;
+    }
+    
+    public CaptureManager getCaptureManager() {
+        return capture;
     }
 
 	public DisplayManager getDisplayManager() {

@@ -1,6 +1,6 @@
 name: Brabotools
 main: com.leovanhaaren.brabotools.Brabotools
-version: 0.1
+version: 0.5
 author: Leo
 description: Plugin for catching mobs with eggs.
 commands:

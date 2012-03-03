@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import com.leovanhaaren.brabotools.Brabotools;
@@ -23,6 +24,8 @@ public class BlockListener implements Listener {
 	
     @EventHandler(priority = EventPriority.LOWEST)
     public void onBlockPlace(BlockPlaceEvent event) {
+        if (event.isCancelled()) return;
+        
     	Block  block  	= 	event.getBlock().getRelative(BlockFace.DOWN);
     	Player player	= 	event.getPlayer();
     	
@@ -41,6 +44,8 @@ public class BlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOW)
     public void onBlockBreak(BlockBreakEvent event) {
+        if (event.isCancelled()) return;
+        
     	Block block = event.getBlock();
     	Player player = event.getPlayer();
     	Boolean isBlock = false;
@@ -52,10 +57,22 @@ public class BlockListener implements Listener {
     		}
     	}
     	
-		if(isBlock) {
-			event.setCancelled(true);
-			plugin.getDisplayManager().removeDisplayTable(player, block);
+		if (isBlock) {
+			if(!plugin.getDisplayManager().removeDisplayTable(player, block))
+				event.setCancelled(true);
 		}
+    }
+	
+	@EventHandler(priority = EventPriority.LOW)
+    public void onBlockFromTo(BlockFromToEvent  event) {
+        if (event.isCancelled()) return;
+		
+    	for (DisplayTable table: plugin.getDisplayManager().getDisplayTables()) {
+    		if (table.getBlock().getRelative(BlockFace.UP).equals(event.getToBlock())) {
+    			event.setCancelled(true);
+    			break;
+    		}
+    	}
     }
     
 }
