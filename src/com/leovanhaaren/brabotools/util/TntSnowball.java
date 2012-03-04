@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.leovanhaaren.brabotools.Brabotools;
-import com.leovanhaaren.brabotools.inventory.PlayerItem;
+import com.leovanhaaren.brabotools.inventory.ItemManager;
 
 public class TntSnowball {
 	
@@ -19,7 +19,7 @@ public class TntSnowball {
 	public void Explode(Player player, Entity entity) {		
 		if (!plugin.getConfigManager().TNT_SNOWBALL_ENABLED) return;
 		
-		if (PlayerItem.Remove(player.getInventory(), new ItemStack(Material.TNT, 1)))
+		if (ItemManager.Remove(player.getInventory(), new ItemStack(Material.TNT, 1)))
 			entity.getWorld().createExplosion(entity.getLocation(), plugin.getConfigManager().TNT_SNOWBALL_RANGE);
 	}
 	

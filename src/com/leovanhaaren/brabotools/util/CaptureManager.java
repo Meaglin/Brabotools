@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.leovanhaaren.brabotools.Brabotools;
-import com.leovanhaaren.brabotools.inventory.PlayerItem;
+import com.leovanhaaren.brabotools.inventory.ItemManager;
 
 public class CaptureManager {
 	
@@ -31,7 +31,7 @@ public class CaptureManager {
             }
             
             ItemStack cost = new ItemStack(371, 1);
-            if (!PlayerItem.Remove(p.getInventory(), cost)) {
+            if (!ItemManager.Remove(p.getInventory(), cost)) {
                 p.sendMessage(ChatColor.RED + plugin.getConfigManager().MOB_COST_MESSAGE);
                 break;
             }

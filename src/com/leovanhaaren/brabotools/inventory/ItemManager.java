@@ -3,7 +3,7 @@ package com.leovanhaaren.brabotools.inventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class PlayerItem {
+public class ItemManager {
 	
 	public static boolean Remove(Inventory inventory, ItemStack item) {
 		ItemStack[] stacks = inventory.getContents();
