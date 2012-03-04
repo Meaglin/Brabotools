@@ -4,6 +4,6 @@ version: 0.5
 author: Leo
 description: Plugin for catching mobs with eggs.
 commands:
-    reloadtables:
+    displaytables:
         description: Command for reloading all Display Tables!
-        usage: /<command>
+        usage: /<command> [reload]

@@ -44,10 +44,8 @@ public class EntityListener implements Listener {
         }
     }
 	
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void OnEntityDamage(EntityDamageEvent event) {
-        if (event.isCancelled()) return;
-        
 		if ((event instanceof EntityDamageByEntityEvent)) {
 			EntityDamageByEntityEvent entity = (EntityDamageByEntityEvent)event;
 			
@@ -74,38 +72,24 @@ public class EntityListener implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onEntityExplode(EntityExplodeEvent event) {
-        if (event.isCancelled()) return;
-        
         List<Block> blocks = event.blockList();
         
-    	for (DisplayTable table: plugin.getDisplayManager().getDisplayTables()) {
-    		for (Block block: blocks) {
-				try {
-		    		if(table.getBlock().equals(block)) {
-		    			event.setCancelled(true);
-		    			table.respawn();
-		    			break;
-		    		}
-				} catch (Exception e) {}
+		for (Block block: blocks) {
+		    DisplayTable table = plugin.getDisplayManager().getTableByBlock(block);
+		    if(table != null) {
+		        event.setCancelled(true);
+		        table.respawn();
     		}
     	}
     }
 	
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onItemDespawn(ItemDespawnEvent event) {
-        if (event.isCancelled()) return;
-        
-		for (DisplayTable table:  plugin.getDisplayManager().getDisplayTables()) {
-			try {
-				if(table.getItem().equals(event.getEntity())){
-					event.setCancelled(true);
-					table.respawn();
-					break;
-				}
-			} catch (Exception e) {}
-		}
+        if(event.getEntity().getPickupDelay() == DisplayTable.MAGIC_DELAY) {
+            event.setCancelled(true);
+        }
     }
 	
 }

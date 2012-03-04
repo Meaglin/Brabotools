@@ -18,36 +18,24 @@ public class PistonListener implements Listener {
 		plugin = brabotools;
 	}
 	
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onPistonExtend(BlockPistonExtendEvent event) {
-        if (event.isCancelled()) return;
-        
-    	for (DisplayTable table: plugin.getDisplayManager().getDisplayTables()) {
-    		for (Block block: event.getBlocks()) {
-				try {
-		    		if(table.getBlock().equals(block)) {
-		    			event.setCancelled(true);
-		    			table.updatePosition();
-		    			break;
-		    		}
-				} catch (Exception e) {}
-    		}
-    	}
+		for (Block block: event.getBlocks()) {
+		    DisplayTable table = plugin.getDisplayManager().getTableByBlock(block);
+            if(table != null) {
+                event.setCancelled(true);
+                table.respawn();
+            }
+		}
     }
 	
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onPistonRetract(BlockPistonRetractEvent event) {
-        if (event.isCancelled()) return;
-        
-    	for (DisplayTable table: plugin.getDisplayManager().getDisplayTables()) {
-			try {
-	    		if(table.getBlock().equals(event.getBlock().getRelative(event.getDirection(), 2))) {
-	    			event.setCancelled(true);
-	    			table.updatePosition();
-	    			break;
-	    		}
-			} catch (Exception e) {}
-    	}
+        DisplayTable table = plugin.getDisplayManager().getTableByBlock(event.getBlock().getRelative(event.getDirection(), 2));
+        if(table != null) {
+            event.setCancelled(true);
+            table.respawn();
+        }
     }
 
 }

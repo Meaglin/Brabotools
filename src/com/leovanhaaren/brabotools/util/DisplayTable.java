@@ -23,6 +23,8 @@ public class DisplayTable {
 	private short 		itemdata;
 	private Item 		item;
 	private boolean 	chunkLoaded = false;
+	
+	public static final int MAGIC_DELAY = 2511;
 
 	public DisplayTable(Block block, Player player, int itemid, short itemdata) {
 		setWorld(block.getWorld().getName());
@@ -35,7 +37,7 @@ public class DisplayTable {
 		ItemStack item = new ItemStack(itemid, 1, itemdata);
 		if (isChunkLoaded()) {
 			setItem(getBlock().getWorld().dropItem(getBlock().getLocation(), item));
-			getItem().setPickupDelay(2500);
+			getItem().setPickupDelay(MAGIC_DELAY);
 			
 			updatePosition();
 			checkForDupedItem();
@@ -56,7 +58,7 @@ public class DisplayTable {
 		if (isChunkLoaded()) {
 			ItemStack item = new ItemStack(getItemId(), 1, getItemData());
 			setItem(getBlock().getLocation().getWorld().dropItem(getBlock().getLocation(), item));
-			getItem().setPickupDelay(2500);
+			getItem().setPickupDelay(MAGIC_DELAY);
 			
 			updatePosition();
 			checkForDupedItem();
@@ -73,7 +75,7 @@ public class DisplayTable {
 			
 			ItemStack stack = new ItemStack(getItemId(), 1, getItemData());
 			setItem(getBlock().getLocation().getWorld().dropItem(getBlock().getLocation(), stack));
-			getItem().setPickupDelay(2500);
+			getItem().setPickupDelay(MAGIC_DELAY);
 			updatePosition();
 		}
 	}
