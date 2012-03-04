@@ -25,10 +25,8 @@ public class PlayerListener implements Listener {
 		plugin = brabotools;
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.isCancelled()) return;
-        
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if (!plugin.getConfigManager().DISPLAY_TABLE_ENABLED) return;
 			
@@ -59,46 +57,34 @@ public class PlayerListener implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
-		if (event.isCancelled()) return;
-
-		for (DisplayTable table : plugin.getDisplayManager().getDisplayTables()) {
-			try {
-				 if (table.getBlock().equals(event.getBlockClicked())) {
-					 event.setCancelled(true);
-					 table.respawn();
-					 break;
-				 }
-				 if (table.getBlock().equals(event.getBlockClicked().getRelative(BlockFace.DOWN, 2))) {
-					 event.setCancelled(true);
-					 table.respawn();
-					 break;
-				 }
-				 if (table.getBlock().equals(event.getBlockClicked().getRelative(event.getBlockFace()).getRelative(BlockFace.DOWN))) {
-					 event.setCancelled(true);
-					 table.respawn();
-					 break;
-				 }
-
-			} catch (Exception e) {
-			}
+		DisplayTable table = plugin.getDisplayManager().getTableByBlock(event.getBlockClicked());
+		if (table != null) {
+		    event.setCancelled(true);
+		    table.respawn();
+		    return;
+		}
+		
+		table = plugin.getDisplayManager().getTableByBlock(event.getBlockClicked().getRelative(BlockFace.DOWN, 2));
+		if (table != null) {
+		    event.setCancelled(true);
+		    table.respawn();
+		    return;
+		}
+		
+		table = plugin.getDisplayManager().getTableByBlock(event.getBlockClicked().getRelative(BlockFace.DOWN));
+		if (table != null) {
+		    event.setCancelled(true);
+		    table.respawn();
+		    return;
 		}
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        if (event.isCancelled()) return;
-        
-		for (DisplayTable table : plugin.getDisplayManager().getDisplayTables()) {
-			try {
-				if (table.getItem().equals(event.getItem())) {
-					table.getItem().setPickupDelay(2500);
-					event.setCancelled(true);
-					break;
-				}
-			} catch (Exception e) {
-			}
+        if(event.getItem().getPickupDelay() == DisplayTable.MAGIC_DELAY) {
+			event.setCancelled(true);
 		}
 	}
 }

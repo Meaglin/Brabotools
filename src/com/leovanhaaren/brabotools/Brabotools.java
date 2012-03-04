@@ -13,6 +13,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.avaje.ebean.EbeanServer;
 import com.leovanhaaren.brabotools.listener.BlockListener;
 import com.leovanhaaren.brabotools.listener.EntityListener;
 import com.leovanhaaren.brabotools.listener.PistonListener;
@@ -68,11 +69,12 @@ public class Brabotools extends JavaPlugin {
     }
     
     public boolean onCommand(CommandSender sender, Command cmd, String label, String args[]) {
-		if (cmd.getName().equals("reloadtables")) {
-			if (args.length > 0) return false;
+		if (cmd.getName().equals("displaytables")) {
+			if (args.length != 1) return false;
+			if (!args[0].equalsIgnoreCase("reload")) return false;
 			
 			Player player = (Player) sender;
-			if (!canUse(player, "displayTable")) return false;
+			if (!canUse(player, "displaytable.reload")) return false;
 			
 			manager.reloadTableItems();
 			player.sendMessage(ChatColor.GOLD + "Display tables reloaded.");
@@ -116,6 +118,11 @@ public class Brabotools extends JavaPlugin {
 
 	public DisplayManager getDisplayManager() {
 		return manager;
+	}
+	
+	@Deprecated // Prevent usage.
+	public EbeanServer getDatabase() {
+	    return super.getDatabase();
 	}
 	
 }

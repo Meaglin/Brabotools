@@ -1,7 +1,7 @@
 package com.leovanhaaren.brabotools.util;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,17 +18,19 @@ import com.leovanhaaren.brabotools.Brabotools;
 public class DisplayManager {
 
     private Brabotools plugin;
-    public List<DisplayTable> tables = new ArrayList<DisplayTable>();
+    
+    public HashMap<Block, DisplayTable> map = new HashMap<Block, DisplayTable>();
 
     public DisplayManager(Brabotools brabotools) {
         plugin = brabotools;
     }
 
     public DisplayTable getTableByBlock(Block block) {
-        for (DisplayTable table : tables) {
-            if (table.getBlock().equals(block)) return table;
-        }
-        return null;
+        return map.get(block);
+    }
+    
+    public boolean isTable(Block block) {
+        return map.containsKey(block);
     }
 
     public boolean isTableBlock(Block block) {
@@ -58,41 +60,32 @@ public class DisplayManager {
     }
 
     public boolean removeDisplayTable(Player player, Block block) {
-        synchronized (tables) {
-            Iterator<DisplayTable> tableiter = tables.iterator();
-            while (tableiter.hasNext()) {
-                DisplayTable table = tableiter.next();
-                if (!table.getBlock().equals(block)) continue;
-                
-                if (!table.getPlayer().equals(player.getName())) {
-                    player.sendMessage(ChatColor.RED + plugin.getConfigManager().TABLE_NOT_OWNER_MESSAGE);
-                    return false;
-                }
-                
-                if (!plugin.getMysqlDatabase().delete(table)) break;
-
-                table.getItem().setPickupDelay(0);
-                tableiter.remove();
-                player.sendMessage(ChatColor.GOLD + plugin.getConfigManager().TABLE_REMOVE_MESSAGE);
-                return true;
-            }
+        
+        DisplayTable table = map.get(block);
+            
+        if (table == null || !table.getPlayer().equals(player.getName())) {
+            player.sendMessage(ChatColor.RED + plugin.getConfigManager().TABLE_NOT_OWNER_MESSAGE);
+            return false;
         }
-        return false;
+            
+        if (!plugin.getMysqlDatabase().delete(table)) return false;
+
+        table.getItem().setPickupDelay(0);
+        player.sendMessage(ChatColor.GOLD + plugin.getConfigManager().TABLE_REMOVE_MESSAGE);
+        map.remove(table.getBlock());
+        return true;
     }
 
-    public List<DisplayTable> getDisplayTables() {
-        return tables;
+    public Collection<DisplayTable> getDisplayTables() {
+        return map.values();
     }
 
     public void addTable(DisplayTable table) {
-        tables.add(table);
+        map.put(table.getBlock(), table);
     }
 
     public void removeTable(DisplayTable table) {
-        try {
-            tables.remove(table);
-        } catch (Exception e) {
-        }
+        map.remove(table.getBlock());
     }
 
     public void loadTables() {
@@ -100,17 +93,17 @@ public class DisplayManager {
             List<DisplayTable> tables = plugin.getMysqlDatabase().getTables(world.getName());
 
             for (DisplayTable table : tables)
-                 this.tables.add(table);
+                 map.put(table.getBlock(), table);
         }
     }
 
     public void unloadTables() {
-        for (DisplayTable table : getDisplayTables())
+        for (DisplayTable table : map.values())
              table.remove();
     }
 
     public void reloadTableItems() {
-        for (DisplayTable table : getDisplayTables()) 
+        for (DisplayTable table : map.values()) 
              table.respawn();
     }
 }
