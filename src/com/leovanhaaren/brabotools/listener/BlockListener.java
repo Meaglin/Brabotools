@@ -22,58 +22,37 @@ public class BlockListener implements Listener {
 		plugin = brabotools;
 	}
 	
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.isCancelled()) return;
-        
     	Block  block  	= 	event.getBlock().getRelative(BlockFace.DOWN);
     	Player player	= 	event.getPlayer();
     	
-    	for (DisplayTable table: plugin.getDisplayManager().getDisplayTables()) {
-			try {
-				
-	    		if(table.getBlock().equals(block)) {
-					event.setCancelled(true);
+    	DisplayTable table = plugin.getDisplayManager().getTableByBlock(block);
+    	if(table != null) {
+    	    event.setCancelled(true);
 					
-					player.sendMessage(ChatColor.RED + plugin.getConfigManager().TABLE_PLACE_BLOCK_MESSAGE);
-					table.updatePosition();
-					break;
-				}
-			} catch (Exception e) {}
+			player.sendMessage(ChatColor.RED + plugin.getConfigManager().TABLE_PLACE_BLOCK_MESSAGE);
+			table.updatePosition();
     	}
     }
 
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-        if (event.isCancelled()) return;
-        
     	Block block = event.getBlock();
     	Player player = event.getPlayer();
-    	Boolean isBlock = false;
+    	boolean isBlock = plugin.getDisplayManager().getTableByBlock(block) != null;
 		
-    	for (DisplayTable table: plugin.getDisplayManager().getDisplayTables()) {
-    		if(table.getBlock().equals(block)) {
-    			isBlock = true;
-    			break;
-    		}
-    	}
-    	
 		if (isBlock) {
 			if(!plugin.getDisplayManager().removeDisplayTable(player, block))
 				event.setCancelled(true);
 		}
     }
 	
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent  event) {
-        if (event.isCancelled()) return;
-		
-    	for (DisplayTable table: plugin.getDisplayManager().getDisplayTables()) {
-    		if (table.getBlock().getRelative(BlockFace.UP).equals(event.getToBlock())) {
-    			event.setCancelled(true);
-    			break;
-    		}
-    	}
+        if(plugin.getDisplayManager().isTable(event.getBlock().getRelative(BlockFace.DOWN))) {
+            event.setCancelled(true);
+        }
     }
     
 }
