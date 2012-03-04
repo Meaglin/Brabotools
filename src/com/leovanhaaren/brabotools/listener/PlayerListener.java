@@ -83,7 +83,9 @@ public class PlayerListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        if(event.getItem().getPickupDelay() == DisplayTable.MAGIC_DELAY) {
+        if(event.getItem().getPickupDelay() >= 5000) {
+            event.getItem().setPickupDelay(DisplayTable.PICKUP_DELAY);
+            event.getItem().setTicksLived(DisplayTable.AGE);
 			event.setCancelled(true);
 		}
 	}
