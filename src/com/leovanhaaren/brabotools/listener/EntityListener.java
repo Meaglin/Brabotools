@@ -86,6 +86,7 @@ public class EntityListener implements Listener {
 		    		if(table.getBlock().equals(block)) {
 		    			event.setCancelled(true);
 		    			table.respawn();
+		    			break;
 		    		}
 				} catch (Exception e) {}
     		}
@@ -101,6 +102,7 @@ public class EntityListener implements Listener {
 				if(table.getItem().equals(event.getEntity())){
 					event.setCancelled(true);
 					table.respawn();
+					break;
 				}
 			} catch (Exception e) {}
 		}

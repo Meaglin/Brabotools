@@ -68,7 +68,19 @@ public class PlayerListener implements Listener {
 				 if (table.getBlock().equals(event.getBlockClicked())) {
 					 event.setCancelled(true);
 					 table.respawn();
-				}
+					 break;
+				 }
+				 if (table.getBlock().equals(event.getBlockClicked().getRelative(BlockFace.DOWN, 2))) {
+					 event.setCancelled(true);
+					 table.respawn();
+					 break;
+				 }
+				 if (table.getBlock().equals(event.getBlockClicked().getRelative(event.getBlockFace()).getRelative(BlockFace.DOWN))) {
+					 event.setCancelled(true);
+					 table.respawn();
+					 break;
+				 }
+
 			} catch (Exception e) {
 			}
 		}
@@ -83,6 +95,7 @@ public class PlayerListener implements Listener {
 				if (table.getItem().equals(event.getItem())) {
 					table.getItem().setPickupDelay(2500);
 					event.setCancelled(true);
+					break;
 				}
 			} catch (Exception e) {
 			}

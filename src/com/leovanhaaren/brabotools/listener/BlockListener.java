@@ -37,6 +37,7 @@ public class BlockListener implements Listener {
 					
 					player.sendMessage(ChatColor.RED + plugin.getConfigManager().TABLE_PLACE_BLOCK_MESSAGE);
 					table.updatePosition();
+					break;
 				}
 			} catch (Exception e) {}
     	}

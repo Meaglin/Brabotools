@@ -28,6 +28,7 @@ public class PistonListener implements Listener {
 		    		if(table.getBlock().equals(block)) {
 		    			event.setCancelled(true);
 		    			table.updatePosition();
+		    			break;
 		    		}
 				} catch (Exception e) {}
     		}
@@ -43,6 +44,7 @@ public class PistonListener implements Listener {
 	    		if(table.getBlock().equals(event.getBlock().getRelative(event.getDirection(), 2))) {
 	    			event.setCancelled(true);
 	    			table.updatePosition();
+	    			break;
 	    		}
 			} catch (Exception e) {}
     	}
