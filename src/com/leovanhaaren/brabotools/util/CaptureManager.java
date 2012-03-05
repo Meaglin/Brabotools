@@ -30,7 +30,7 @@ public class CaptureManager {
                 break;
             }
             
-            ItemStack cost = new ItemStack(371, 1);
+            ItemStack cost = new ItemStack(plugin.getConfigManager().MOBCATCH_COST, 1);
             if (!ItemManager.Remove(p.getInventory(), cost)) {
                 p.sendMessage(ChatColor.RED + plugin.getConfigManager().MOB_COST_MESSAGE);
                 break;

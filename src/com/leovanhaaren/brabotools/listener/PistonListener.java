@@ -24,7 +24,7 @@ public class PistonListener implements Listener {
 		    DisplayTable table = plugin.getDisplayManager().getTableByBlock(block);
             if(table != null) {
                 event.setCancelled(true);
-                table.respawn();
+                table.updatePosition();
             }
 		}
     }
@@ -34,7 +34,7 @@ public class PistonListener implements Listener {
         DisplayTable table = plugin.getDisplayManager().getTableByBlock(event.getBlock().getRelative(event.getDirection(), 2));
         if(table != null) {
             event.setCancelled(true);
-            table.respawn();
+            table.updatePosition();
         }
     }
 

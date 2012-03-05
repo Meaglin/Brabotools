@@ -89,7 +89,6 @@ public class EntityListener implements Listener {
     public void onItemDespawn(ItemDespawnEvent event) {
 	    if(event.getEntity().getPickupDelay() >= 5000) {
 	        event.getEntity().setPickupDelay(DisplayTable.PICKUP_DELAY);
-	        event.getEntity().setTicksLived(DisplayTable.AGE);
             event.setCancelled(true);
         }
     }

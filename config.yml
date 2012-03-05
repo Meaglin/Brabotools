@@ -34,13 +34,10 @@ mobCatch:
 displayTable:
     enabled: true
     tableblocks:
-    - 1
     - 35
     - 41
     - 42
     - 44
+    - 49
     - 57
-    - 89
     - 98
-    - 123
-    - 124

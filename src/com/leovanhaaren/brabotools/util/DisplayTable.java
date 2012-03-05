@@ -25,7 +25,6 @@ public class DisplayTable {
 	private boolean 	chunkLoaded = false;
 	
 	public static final int PICKUP_DELAY = Integer.MAX_VALUE; // 3.4 Years
-	public static final int AGE = Integer.MIN_VALUE; // 3.4 Years
 
 	public DisplayTable(Block block, Player player, int itemid, short itemdata) {
 		setWorld(block.getWorld().getName());
@@ -39,7 +38,6 @@ public class DisplayTable {
 		if (isChunkLoaded()) {
 			setItem(getBlock().getWorld().dropItem(getBlock().getLocation(), item));
 			getItem().setPickupDelay(PICKUP_DELAY);
-			getItem().setTicksLived(AGE);
 			updatePosition();
 			checkForDupedItem();
 		}
@@ -60,7 +58,6 @@ public class DisplayTable {
 			ItemStack item = new ItemStack(getItemId(), 1, getItemData());
 			setItem(getBlock().getLocation().getWorld().dropItem(getBlock().getLocation(), item));
 			getItem().setPickupDelay(PICKUP_DELAY);
-			getItem().setTicksLived(AGE);
 			updatePosition();
 			checkForDupedItem();
 		}
@@ -77,7 +74,6 @@ public class DisplayTable {
 			ItemStack stack = new ItemStack(getItemId(), 1, getItemData());
 			setItem(getBlock().getLocation().getWorld().dropItem(getBlock().getLocation(), stack));
 			getItem().setPickupDelay(PICKUP_DELAY);
-			getItem().setTicksLived(AGE);
 			updatePosition();
 		}
 	}

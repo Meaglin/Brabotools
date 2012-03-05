@@ -14,6 +14,8 @@ public class ConfigManager {
 	public int			TNT_SNOWBALL_RANGE 						= 	0;
 	
 	public boolean 		MOBCATCH_ENABLED 						= 	false;
+	public int	 		MOBCATCH_COST 							= 	371;
+	
 	public boolean 		DISPLAY_TABLE_ENABLED 					= 	false;
 	public List<Integer> DISPLAY_TABLE_BLOCKS 					= 	null;
 	
@@ -28,6 +30,7 @@ public class ConfigManager {
 	public final String TABLE_PLACE_BLOCK_MESSAGE 				= 	"Cannot place block on a Display Table!";
 	public final String TABLE_CANNOT_DESTROY_BLOCK_MESSAGE 		= 	"Cannot destroy a Display Table block!";
 	public final String TABLE_NOT_OWNER_MESSAGE 				= 	"This Display Table doesn't belong to you!";
+	public final String TABLES_RELOADED_MESSAGE 				= 	"Display Tables reloaded!";
 
 	public ConfigManager(Brabotools brabotools) {
 		plugin = brabotools;
@@ -49,6 +52,7 @@ public class ConfigManager {
     	TNT_SNOWBALL_RANGE 	 	= config.getInt(        "tntSnowball.range");
     	
     	MOBCATCH_ENABLED 	 	= config.getBoolean(    "mobCatch.enabled");
+    	MOBCATCH_COST 	 		= config.getInt(    	"mobCatch.cost");
     	
     	DISPLAY_TABLE_ENABLED 	= config.getBoolean(    "displayTable.enabled");
         DISPLAY_TABLE_BLOCKS 	= config.getIntegerList("displayTable.tableblocks");

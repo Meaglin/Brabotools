@@ -73,7 +73,7 @@ public class PlayerListener implements Listener {
 		    return;
 		}
 		
-		table = plugin.getDisplayManager().getTableByBlock(event.getBlockClicked().getRelative(BlockFace.DOWN));
+		table = plugin.getDisplayManager().getTableByBlock(event.getBlockClicked().getRelative(event.getBlockFace()).getRelative(BlockFace.DOWN));
 		if (table != null) {
 		    event.setCancelled(true);
 		    table.respawn();
@@ -85,7 +85,6 @@ public class PlayerListener implements Listener {
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
         if(event.getItem().getPickupDelay() >= 5000) {
             event.getItem().setPickupDelay(DisplayTable.PICKUP_DELAY);
-            event.getItem().setTicksLived(DisplayTable.AGE);
 			event.setCancelled(true);
 		}
 	}

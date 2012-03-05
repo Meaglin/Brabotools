@@ -50,7 +50,7 @@ public class BlockListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent  event) {
-        if(plugin.getDisplayManager().isTable(event.getBlock().getRelative(BlockFace.DOWN))) {
+        if(plugin.getDisplayManager().isTable(event.getBlock().getRelative(BlockFace.DOWN, 2))) {
             event.setCancelled(true);
         }
     }
