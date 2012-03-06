@@ -3,6 +3,8 @@ package com.leovanhaaren.brabotools.util;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -27,6 +29,11 @@ public class CaptureManager {
                 continue;
             }
             
+            if (!eggType.isEnabled()) {
+                player.sendMessage(plugin.getConfigManager().MOB_DISABLED_MESSAGE);
+                break;
+            }
+            
             if (livingentity instanceof Tameable) {
                 if (((Tameable)livingentity).isTamed()) {
                 	player.sendMessage(plugin.getConfigManager().MOB_TAMED_MESSAGE);
@@ -41,24 +48,25 @@ public class CaptureManager {
 	            }
 	        }
             
-            if (!eggType.isEnabled()) {
-                player.sendMessage(plugin.getConfigManager().MOB_DISABLED_MESSAGE);
-                break;
-            }
-            
             ItemStack cost = new ItemStack(plugin.getConfigManager().MOBCATCH_COST, 1);
             if (!ItemManager.Remove(player.getInventory(), cost)) {
             	player.sendMessage(plugin.getConfigManager().MOB_COST_MESSAGE);
                 break;
             }
             
-            Random r = new Random();
-            if (r.nextDouble() > (0.5)) {
+            Random random = new Random();
+            if (random.nextDouble() > (0.5)) {
+            	World world = player.getWorld();
+            	Location location = livingentity.getLocation();
+            	
             	livingentity.remove();
+            		
                 ItemStack item = new ItemStack(383, 1, (short) eggType.getId());
-                player.getWorld().dropItem(livingentity.getLocation(), item);
+                world.dropItem(location, item);
+                
                 String mob = eggType.getEntityType().getName();
                 player.sendMessage(ChatColor.GOLD + mob + plugin.getConfigManager().MOB_CAUGHT_MESSAGE);
+                
                 player.updateInventory();
                 break;
             }

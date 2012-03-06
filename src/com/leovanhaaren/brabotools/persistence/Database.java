@@ -8,11 +8,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.plugin.PluginDescriptionFile;
+
 import com.avaje.ebean.config.ServerConfig;
 import com.leovanhaaren.brabotools.Brabotools;
 import com.leovanhaaren.brabotools.util.DisplayTable;
 import com.mysql.jdbc.Statement;
 public class Database {
+	
+    private Brabotools plugin;
 	
     private final String url,username,password;
     
@@ -24,13 +28,16 @@ public class Database {
     public static final String SELECT_TABLE =    "SELECT * FROM `displaytables` WHERE id = ? LIMIT 1";
     
     public Database(Brabotools brabotools) {
+    	plugin = brabotools;
+    	
         ServerConfig db = new ServerConfig();
         brabotools.getServer().configureDbConfig(db);
 
         try {
             Class.forName(db.getDataSourceConfig().getDriver());
         } catch(Exception e) {
-        	Brabotools.logger.warning("[Brabotools] Warning JDBC not available.");
+        	PluginDescriptionFile pdfFile = plugin.getDescription();
+        	Brabotools.logger.warning(pdfFile.getName() + " Warning JDBC not available.");
         }
         
         this.url = db.getDataSourceConfig().getUrl();
@@ -57,7 +64,8 @@ public class Database {
             	tables.add(table);
             }
         } catch(Exception e) {
-        	Brabotools.logger.warning("[Brabotools] Error loading tables of world " + world);
+        	PluginDescriptionFile pdfFile = plugin.getDescription();
+        	Brabotools.logger.warning(pdfFile.getName() + " Error loading tables of world " + world);
             e.printStackTrace();
         } finally {
             try {
@@ -90,7 +98,8 @@ public class Database {
                 table.setId(rs.getInt(1));
             }
         } catch(Exception e) {
-        	Brabotools.logger.warning("[Brabotools] Error saving table " + table.getId() + "!");
+        	PluginDescriptionFile pdfFile = plugin.getDescription();
+        	Brabotools.logger.warning(pdfFile.getName() + " Error saving table " + table.getId() + "!");
             e.printStackTrace();
             return false;
         } finally {
@@ -114,7 +123,8 @@ public class Database {
             st.setInt(1, table.getId());
             st.execute();
         } catch(Exception e) {
-        	Brabotools.logger.warning("[Brabotools] Error deleting table " + table.getId() + "!");
+        	PluginDescriptionFile pdfFile = plugin.getDescription();
+        	Brabotools.logger.warning(pdfFile.getName() + " Error deleting table " + table.getId() + "!");
             e.printStackTrace();
             return false;
         } finally {

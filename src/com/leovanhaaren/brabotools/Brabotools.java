@@ -43,26 +43,28 @@ public class Brabotools extends JavaPlugin {
    	}   
    	
     public void onEnable() {
-		PluginDescriptionFile pdfFile = this.getDescription();
+    	PluginDescriptionFile pdfFile = this.getDescription();
 		logger.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is now enabled.");
+		
+		PluginManager pm = getServer().getPluginManager();
 		
 		config = new ConfigManager(this);
 		config.loadConfig();
 		
-		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(new WorldListener(this), this);
-		pm.registerEvents(new BlockListener(this), this);
-		pm.registerEvents(new PistonListener(this), this);
-		pm.registerEvents(new EntityListener(this), this);
-		pm.registerEvents(new PlayerListener(this), this);
+		Plugin plugin = pm.getPlugin("Zones");
+		if(plugin != null) zones = (Zones)plugin;
 		
 		database 		= new Database(this);
 		capture 		= new CaptureManager(this);
 		manager 		= new DisplayManager(this);
 		permissions 	= PermissionsResolver.resolve(this);
 		
-		Plugin plugin = pm.getPlugin("Zones");
-		if(plugin != null) zones = (Zones)plugin;
+
+		pm.registerEvents(new WorldListener(this), this);
+		pm.registerEvents(new BlockListener(this), this);
+		pm.registerEvents(new PistonListener(this), this);
+		pm.registerEvents(new EntityListener(this), this);
+		pm.registerEvents(new PlayerListener(this), this);
 		
 		manager.loadTables();
     }

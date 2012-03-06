@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -51,6 +52,8 @@ public class DisplayManager {
             DisplayTable table = new DisplayTable(block, player, itemid, itemdata);
             addTable(table);
             plugin.getMysqlDatabase().save(table);
+            
+            block.getWorld().playEffect(block.getLocation(), Effect.MOBSPAWNER_FLAMES, 0);
 
             player.sendMessage(plugin.getConfigManager().TABLE_CREATE_MESSAGE);
         } else {

@@ -8,18 +8,18 @@ mobCatch:
     enabled: true
     cost: 371
     mobs:
-        Creeper: true
-        Skeleton: true
+        Creeper: false
+        Skeleton: false
         Spider: false
-        Zombie: true
-        Slime: true
-        Ghast: true
-        PigZombie: true
-        Enderman: true
+        Zombie: false
+        Slime: false
+        Ghast: false
+        PigZombie: false
+        Enderman: false
         CaveSpider: false
-        Silverfish: true
-        Blaze: true
-        LavaSlime: true
+        Silverfish: false
+        Blaze: false
+        LavaSlime: false
         Pig: true
         Sheep: true
         Cow: true
@@ -35,9 +35,5 @@ displayTable:
     enabled: true
     tableblocks:
     - 35
-    - 41
-    - 42
     - 44
-    - 49
-    - 57
     - 98

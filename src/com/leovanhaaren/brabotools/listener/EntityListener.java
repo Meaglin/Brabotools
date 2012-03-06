@@ -63,6 +63,7 @@ public class EntityListener implements Listener {
 	            if((shooter instanceof Player)) {
 		            if(!(target instanceof Player)) {
 		            	Player player = (Player) shooter;
+		            	
 		            	if(plugin.canUse(player, "mobCatch")) {
 		            		if(plugin.canHit(player, target)) {
 		            			plugin.getCaptureManager().Catch(player, target);
