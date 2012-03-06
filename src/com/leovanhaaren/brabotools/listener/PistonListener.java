@@ -18,7 +18,7 @@ public class PistonListener implements Listener {
 		plugin = brabotools;
 	}
 	
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPistonExtend(BlockPistonExtendEvent event) {
 		for (Block block: event.getBlocks()) {
 		    DisplayTable table = plugin.getDisplayManager().getTableByBlock(block);
@@ -29,7 +29,7 @@ public class PistonListener implements Listener {
 		}
     }
 	
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPistonRetract(BlockPistonRetractEvent event) {
         DisplayTable table = plugin.getDisplayManager().getTableByBlock(event.getBlock().getRelative(event.getDirection(), 2));
         if(table != null) {

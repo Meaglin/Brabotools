@@ -12,7 +12,6 @@ import com.avaje.ebean.config.ServerConfig;
 import com.leovanhaaren.brabotools.Brabotools;
 import com.leovanhaaren.brabotools.util.DisplayTable;
 import com.mysql.jdbc.Statement;
-import com.zones.Zones;
 public class Database {
 	
     private final String url,username,password;
@@ -31,7 +30,7 @@ public class Database {
         try {
             Class.forName(db.getDataSourceConfig().getDriver());
         } catch(Exception e) {
-            Zones.log.warning("[Brabotools] Warning JDBC not available.");
+        	Brabotools.logger.warning("[Brabotools] Warning JDBC not available.");
         }
         
         this.url = db.getDataSourceConfig().getUrl();

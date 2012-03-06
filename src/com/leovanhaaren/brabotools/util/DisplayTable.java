@@ -78,6 +78,10 @@ public class DisplayTable {
 		}
 	}
 	
+	public void removeFire() {
+		item.setFireTicks(0);
+	}
+	
 	public void updatePosition() {
 		Vector vec = getBlock().getLocation().toVector();
 		

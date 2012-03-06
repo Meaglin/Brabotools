@@ -17,7 +17,7 @@ public class WorldListener implements Listener {
 		plugin = brabotools;
 	}
 
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.NORMAL)
     public void onChunkLoad(ChunkLoadEvent event) {
 		for (DisplayTable table : plugin.getDisplayManager().getDisplayTables()) {
 			try {
@@ -27,7 +27,7 @@ public class WorldListener implements Listener {
 		}
     }
     
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.NORMAL)
 	public void onChunkUnload(ChunkUnloadEvent event) {
 		for (DisplayTable table : plugin.getDisplayManager().getDisplayTables()) {
 			try {

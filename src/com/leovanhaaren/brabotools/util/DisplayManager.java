@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -53,25 +52,24 @@ public class DisplayManager {
             addTable(table);
             plugin.getMysqlDatabase().save(table);
 
-            player.sendMessage(ChatColor.GOLD + plugin.getConfigManager().TABLE_CREATE_MESSAGE);
+            player.sendMessage(plugin.getConfigManager().TABLE_CREATE_MESSAGE);
         } else {
-            player.sendMessage(ChatColor.RED + plugin.getConfigManager().TABLE_ENCHANT_MESSAGE);
+            player.sendMessage(plugin.getConfigManager().TABLE_ENCHANT_MESSAGE);
         }
     }
 
     public boolean removeDisplayTable(Player player, Block block) {
-        
         DisplayTable table = map.get(block);
             
         if (table == null || !table.getPlayer().equals(player.getName())) {
-            player.sendMessage(ChatColor.RED + plugin.getConfigManager().TABLE_NOT_OWNER_MESSAGE);
+            player.sendMessage(plugin.getConfigManager().TABLE_NOT_OWNER_MESSAGE);
             return false;
         }
             
         if (!plugin.getMysqlDatabase().delete(table)) return false;
 
         table.getItem().setPickupDelay(0);
-        player.sendMessage(ChatColor.GOLD + plugin.getConfigManager().TABLE_REMOVE_MESSAGE);
+        player.sendMessage(plugin.getConfigManager().TABLE_REMOVE_MESSAGE);
         map.remove(table.getBlock());
         return true;
     }

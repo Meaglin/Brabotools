@@ -2,6 +2,7 @@ package com.leovanhaaren.brabotools.listener;
 
 import java.util.List;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.LivingEntity;
@@ -16,9 +17,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.inventory.ItemStack;
+
 import com.leovanhaaren.brabotools.Brabotools;
+import com.leovanhaaren.brabotools.inventory.ItemManager;
 import com.leovanhaaren.brabotools.util.DisplayTable;
-import com.leovanhaaren.brabotools.util.TntSnowball;
 
 public class EntityListener implements Listener {
 	
@@ -28,7 +31,7 @@ public class EntityListener implements Listener {
 		plugin = brabotools;
 	}
 
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.NORMAL)
     public void onProjectileHit(ProjectileHitEvent event) {
 		Entity entity = event.getEntity();
 		
@@ -38,13 +41,16 @@ public class EntityListener implements Listener {
             if((shooter instanceof Player)) {
                 Player player = (Player) shooter;
                 if(plugin.canUse(player, "tntSnowball")) {
-                	new TntSnowball(plugin).Explode(player, entity);
+            		if (!plugin.getConfigManager().TNT_SNOWBALL_ENABLED) return;
+            		
+            		if (ItemManager.Remove(player.getInventory(), new ItemStack(Material.TNT, 1)))
+            			entity.getWorld().createExplosion(entity.getLocation(), plugin.getConfigManager().TNT_SNOWBALL_RANGE);
                 }
             }
         }
     }
 	
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void OnEntityDamage(EntityDamageEvent event) {
 		if ((event instanceof EntityDamageByEntityEvent)) {
 			EntityDamageByEntityEvent entity = (EntityDamageByEntityEvent)event;
@@ -72,7 +78,7 @@ public class EntityListener implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityExplode(EntityExplodeEvent event) {
         List<Block> blocks = event.blockList();
         
@@ -85,7 +91,7 @@ public class EntityListener implements Listener {
     	}
     }
 	
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onItemDespawn(ItemDespawnEvent event) {
 	    if(event.getEntity().getPickupDelay() >= 5000) {
 	        event.getEntity().setPickupDelay(DisplayTable.PICKUP_DELAY);

@@ -1,6 +1,5 @@
 package com.leovanhaaren.brabotools.listener;
 
-import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -22,7 +21,7 @@ public class BlockListener implements Listener {
 		plugin = brabotools;
 	}
 	
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
     	Block  block  	= 	event.getBlock().getRelative(BlockFace.DOWN);
     	Player player	= 	event.getPlayer();
@@ -31,12 +30,13 @@ public class BlockListener implements Listener {
     	if(table != null) {
     	    event.setCancelled(true);
 					
-			player.sendMessage(ChatColor.RED + plugin.getConfigManager().TABLE_PLACE_BLOCK_MESSAGE);
+			player.sendMessage(plugin.getConfigManager().TABLE_PLACE_BLOCK_MESSAGE);
 			table.updatePosition();
+			table.removeFire();
     	}
     }
 
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
     	Block block = event.getBlock();
     	Player player = event.getPlayer();
@@ -48,7 +48,7 @@ public class BlockListener implements Listener {
 		}
     }
 	
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent  event) {
         if(plugin.getDisplayManager().isTable(event.getBlock().getRelative(BlockFace.DOWN, 2))) {
             event.setCancelled(true);

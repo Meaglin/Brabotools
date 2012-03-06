@@ -3,8 +3,10 @@ package com.leovanhaaren.brabotools.util;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
 
 import com.leovanhaaren.brabotools.Brabotools;
@@ -19,40 +21,48 @@ public class CaptureManager {
     }
 
     @SuppressWarnings("deprecation")
-    public void Catch(Player p, LivingEntity e) {
+    public void Catch(Player player, LivingEntity livingentity) {
         for (CaptureType eggType : CaptureType.values()) {
-            if (!eggType.isInstance(e)) {
+            if (!eggType.isInstance(livingentity)) {
                 continue;
             }
             
+            if (livingentity instanceof Tameable) {
+                if (((Tameable)livingentity).isTamed()) {
+                	player.sendMessage(plugin.getConfigManager().MOB_TAMED_MESSAGE);
+                	break;
+                }
+	        }
+
+	        if (livingentity instanceof Animals) {
+	            if (!((Animals)livingentity).isAdult()) {
+	            	player.sendMessage(plugin.getConfigManager().MOB_BABY_MESSAGE);
+	                break;
+	            }
+	        }
+            
             if (!eggType.isEnabled()) {
-                p.sendMessage(ChatColor.RED + plugin.getConfigManager().MOB_DISABLED_MESSAGE);
+                player.sendMessage(plugin.getConfigManager().MOB_DISABLED_MESSAGE);
                 break;
             }
             
             ItemStack cost = new ItemStack(plugin.getConfigManager().MOBCATCH_COST, 1);
-            if (!ItemManager.Remove(p.getInventory(), cost)) {
-                p.sendMessage(ChatColor.RED + plugin.getConfigManager().MOB_COST_MESSAGE);
+            if (!ItemManager.Remove(player.getInventory(), cost)) {
+            	player.sendMessage(plugin.getConfigManager().MOB_COST_MESSAGE);
                 break;
             }
             
-            if (getSucces()) {
-                e.remove();
+            Random r = new Random();
+            if (r.nextDouble() > (0.5)) {
+            	livingentity.remove();
                 ItemStack item = new ItemStack(383, 1, (short) eggType.getId());
-                p.getWorld().dropItem(e.getLocation(), item);
+                player.getWorld().dropItem(livingentity.getLocation(), item);
                 String mob = eggType.getEntityType().getName();
-                p.sendMessage(ChatColor.GOLD + mob + plugin.getConfigManager().MOB_CAUGHT_MESSAGE);
-                p.updateInventory();
+                player.sendMessage(ChatColor.GOLD + mob + plugin.getConfigManager().MOB_CAUGHT_MESSAGE);
+                player.updateInventory();
                 break;
             }
         }
     }
 
-    public boolean getSucces() {
-        Random r = new Random();
-        if (r.nextDouble() > (0.5)) {
-            return true;
-        }
-        return false;
-    }
 }

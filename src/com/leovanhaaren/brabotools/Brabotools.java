@@ -2,7 +2,6 @@ package com.leovanhaaren.brabotools;
 
 import java.util.logging.Logger;
 
-import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -77,28 +76,28 @@ public class Brabotools extends JavaPlugin {
 			if (!canUse(player, "displaytable.reload")) return false;
 			
 			manager.reloadTableItems();
-			player.sendMessage(ChatColor.GOLD + "Display tables reloaded.");
+			player.sendMessage(config.TABLES_RELOADED_MESSAGE);
 			return true;
 		}
 		return false;
 	}
 	
 	public boolean canUse(Player player, String node) {
-		if(permissions != null) {
+		if (permissions != null) {
 			return permissions.canUse(player, node);
 		}
 		return true;
 	}
 	
 	public boolean canHit(Player player, Entity entity) {
-		if(zones != null) {
+		if (zones != null) {
 			return zones.getApi().canHit(player,entity);
 		}
 		return true;
 	}
 	
 	public boolean canHit(Player player, Block block) {
-		if(zones != null) {
+		if (zones != null) {
 			return zones.getApi().canHit(player,block);
 		}
 		return true;
@@ -115,7 +114,7 @@ public class Brabotools extends JavaPlugin {
     public CaptureManager getCaptureManager() {
         return capture;
     }
-
+    
 	public DisplayManager getDisplayManager() {
 		return manager;
 	}

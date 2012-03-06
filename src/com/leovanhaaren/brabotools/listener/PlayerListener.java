@@ -25,7 +25,7 @@ public class PlayerListener implements Listener {
 		plugin = brabotools;
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if (!plugin.getConfigManager().DISPLAY_TABLE_ENABLED) return;
@@ -57,31 +57,34 @@ public class PlayerListener implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
 		DisplayTable table = plugin.getDisplayManager().getTableByBlock(event.getBlockClicked());
 		if (table != null) {
 		    event.setCancelled(true);
-		    table.respawn();
+			table.updatePosition();
+			table.removeFire();
 		    return;
 		}
 		
 		table = plugin.getDisplayManager().getTableByBlock(event.getBlockClicked().getRelative(BlockFace.DOWN, 2));
 		if (table != null) {
 		    event.setCancelled(true);
-		    table.respawn();
+			table.updatePosition();
+			table.removeFire();
 		    return;
 		}
 		
 		table = plugin.getDisplayManager().getTableByBlock(event.getBlockClicked().getRelative(event.getBlockFace()).getRelative(BlockFace.DOWN));
 		if (table != null) {
 		    event.setCancelled(true);
-		    table.respawn();
+			table.updatePosition();
+			table.removeFire();
 		    return;
 		}
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
         if(event.getItem().getPickupDelay() >= 5000) {
             event.getItem().setPickupDelay(DisplayTable.PICKUP_DELAY);
