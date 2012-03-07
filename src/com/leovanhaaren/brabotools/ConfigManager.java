@@ -5,8 +5,6 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import com.leovanhaaren.brabotools.util.CaptureType;
-
 public class ConfigManager {
 
 	private Brabotools plugin;
@@ -45,12 +43,6 @@ public class ConfigManager {
 		
 		config.options().copyDefaults(true);
 		plugin.saveConfig();
-		
-        for (CaptureType eggType : CaptureType.values()) {
-            String creatureName = eggType.getEntityType().getName();
-            boolean enabled = config.getBoolean("mobCatch.mobs." + creatureName);
-            eggType.setEnabled(enabled);
-        }
         
     	TNT_SNOWBALL_ENABLED 	= config.getBoolean(    		"tntSnowball.enabled");
     	TNT_SNOWBALL_RANGE 	 	= config.getInt(        		"tntSnowball.range");

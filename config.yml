@@ -9,32 +9,36 @@ mobCatch:
     cost: 371
     chance: 50
     mobs:
-        Creeper: false
-        Skeleton: false
-        Spider: false
-        Zombie: false
-        Slime: false
-        Ghast: false
-        PigZombie: false
-        Enderman: false
-        CaveSpider: false
-        Silverfish: false
-        Blaze: false
-        LavaSlime: false
+        Creeper: true
+        Skeleton: true
+        Spider: true
+        Zombie: true
+        Slime: true
+        Ghast: true
+        PigZombie: true
+        Enderman: true
+        CaveSpider: true
+        Silverfish: true
+        Blaze: true
+        LavaSlime: true
         Pig: true
         Sheep: true
         Cow: true
         Chicken: true
         Squid: true
         Wolf: true
-        MushroomCow: false
+        MushroomCow: true
         SnowMan: false
         Ozelot: true
         VillagerGolem: false
-        Villager: false
+        Villager: true
 displayTable:
     enabled: true
     tableblocks:
+    - 20
     - 35
+    - 41
+    - 42
     - 44
+    - 57
     - 98
