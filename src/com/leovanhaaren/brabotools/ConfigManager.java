@@ -16,6 +16,7 @@ public class ConfigManager {
 	
 	public boolean 		MOBCATCH_ENABLED 						= 	false;
 	public int	 		MOBCATCH_COST 							= 	371;
+	public int	 		MOBCATCH_CHANCE 						= 	100;
 	
 	public boolean 		DISPLAY_TABLE_ENABLED 					= 	false;
 	public List<Integer>DISPLAY_TABLE_BLOCKS 					= 	null;
@@ -56,6 +57,7 @@ public class ConfigManager {
     	
     	MOBCATCH_ENABLED 	 	= config.getBoolean(    		"mobCatch.enabled");
     	MOBCATCH_COST 	 		= config.getInt(    			"mobCatch.cost");
+    	MOBCATCH_CHANCE 	 	= config.getInt(    			"mobCatch.chance");
     	
     	DISPLAY_TABLE_ENABLED 	= config.getBoolean(    		"displayTable.enabled");
         DISPLAY_TABLE_BLOCKS 	= config.getIntegerList(		"displayTable.tableblocks");

@@ -55,8 +55,8 @@ public class CaptureManager {
             }
             
             Random random = new Random();
-            if (random.nextDouble() > (0.5)) {
-            	World world = player.getWorld();
+            if (random.nextInt(100) < plugin.getConfigManager().MOBCATCH_CHANCE) {
+            	World world 	  = player.getWorld();
             	Location location = livingentity.getLocation();
             	
             	livingentity.remove();

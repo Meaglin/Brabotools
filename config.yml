@@ -2,11 +2,12 @@
 # Flag mobs as catchable.
 
 tntSnowball:
-    enabled: true
+    enabled: false
     range: 3
 mobCatch:
     enabled: true
     cost: 371
+    chance: 50
     mobs:
         Creeper: false
         Skeleton: false
