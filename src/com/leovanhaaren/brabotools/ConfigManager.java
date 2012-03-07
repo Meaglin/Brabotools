@@ -13,7 +13,8 @@ public class ConfigManager {
 	public int			TNT_SNOWBALL_RANGE 						= 	0;
 	
 	public boolean 		MOBCATCH_ENABLED 						= 	false;
-	public int	 		MOBCATCH_COST 							= 	371;
+	public int	 		MOBCATCH_ITEM 							= 	371;
+	public int	 		MOBCATCH_AMOUNT 						= 	1;
 	public int	 		MOBCATCH_CHANCE 						= 	100;
 	
 	public boolean 		DISPLAY_TABLE_ENABLED 					= 	false;
@@ -48,7 +49,8 @@ public class ConfigManager {
     	TNT_SNOWBALL_RANGE 	 	= config.getInt(        		"tntSnowball.range");
     	
     	MOBCATCH_ENABLED 	 	= config.getBoolean(    		"mobCatch.enabled");
-    	MOBCATCH_COST 	 		= config.getInt(    			"mobCatch.cost");
+    	MOBCATCH_ITEM 	 		= config.getInt(    			"mobCatch.item");
+    	MOBCATCH_AMOUNT 	 	= config.getInt(    			"mobCatch.amount");
     	MOBCATCH_CHANCE 	 	= config.getInt(    			"mobCatch.chance");
     	
     	DISPLAY_TABLE_ENABLED 	= config.getBoolean(    		"displayTable.enabled");

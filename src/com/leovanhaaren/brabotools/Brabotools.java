@@ -19,7 +19,7 @@ import com.leovanhaaren.brabotools.listener.PistonListener;
 import com.leovanhaaren.brabotools.listener.PlayerListener;
 import com.leovanhaaren.brabotools.listener.WorldListener;
 import com.leovanhaaren.brabotools.persistence.Database;
-import com.leovanhaaren.brabotools.util.CaptureManager;
+import com.leovanhaaren.brabotools.util.CaptureMob;
 import com.leovanhaaren.brabotools.util.DisplayManager;
 import com.zones.Zones;
 import com.zones.permissions.Permissions;
@@ -31,7 +31,7 @@ public class Brabotools extends JavaPlugin {
     public static Logger      	logger			= Logger.getLogger("Minecraft");
     private ConfigManager 		config 			= null;
     private Database			database		= null;
-	private CaptureManager 		capture			= null;
+	private CaptureMob 		capture			= null;
     private DisplayManager 		manager			= null;
     private Permissions 		permissions 	= null;
     private Zones 				zones 			= null;
@@ -55,7 +55,7 @@ public class Brabotools extends JavaPlugin {
 		if(plugin != null) zones = (Zones)plugin;
 		
 		database 		= new Database(this);
-		capture 		= new CaptureManager(this);
+		capture 		= new CaptureMob(this);
 		manager 		= new DisplayManager(this);
 		permissions 	= PermissionsResolver.resolve(this);
 		
@@ -113,7 +113,7 @@ public class Brabotools extends JavaPlugin {
         return database;
     }
     
-    public CaptureManager getCaptureManager() {
+    public CaptureMob getCaptureManager() {
         return capture;
     }
     

@@ -67,11 +67,7 @@ public class EntityListener implements Listener {
 		            	if(plugin.canUse(player, "mobCatch")) {
 		            		if(plugin.canHit(player, target)) {
 		            			plugin.getCaptureManager().Catch(player, target);
-		            		} else {
-		            			event.setCancelled(true);
-			            	}
-		            	} else {
-		            		event.setCancelled(true);
+		            		}
 		            	}
 		            }
 	            }

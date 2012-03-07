@@ -1,6 +1,6 @@
 name: Brabotools
 main: com.leovanhaaren.brabotools.Brabotools
-version: 0.8
+version: 1.0
 author: Leo
 description: Plugin for catching mobs with eggs and allows the reaction of a Display table.
 commands:

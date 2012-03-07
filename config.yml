@@ -6,7 +6,8 @@ tntSnowball:
     range: 3
 mobCatch:
     enabled: true
-    cost: 371
+    item: 371
+    amount: 1
     chance: 50
     mobs:
         Creeper: true
