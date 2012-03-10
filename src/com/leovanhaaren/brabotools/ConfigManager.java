@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 public class ConfigManager {
 
@@ -13,8 +14,9 @@ public class ConfigManager {
 	public int			TNT_SNOWBALL_RANGE 						= 	0;
 	
 	public boolean 		MOBCATCH_ENABLED 						= 	false;
-	public int	 		MOBCATCH_ITEM 							= 	371;
+	public int	 		MOBCATCH_ITEMID 					    = 	371;
 	public int	 		MOBCATCH_AMOUNT 						= 	1;
+	public ItemStack    MOBCATCH_ITEM                           =   new ItemStack(MOBCATCH_ITEMID, MOBCATCH_AMOUNT);
 	public int	 		MOBCATCH_CHANCE 						= 	100;
 	
 	public boolean 		DISPLAY_TABLE_ENABLED 					= 	false;
@@ -49,8 +51,9 @@ public class ConfigManager {
     	TNT_SNOWBALL_RANGE 	 	= config.getInt(        		"tntSnowball.range");
     	
     	MOBCATCH_ENABLED 	 	= config.getBoolean(    		"mobCatch.enabled");
-    	MOBCATCH_ITEM 	 		= config.getInt(    			"mobCatch.item");
+    	MOBCATCH_ITEMID 	 	= config.getInt(    			"mobCatch.item");
     	MOBCATCH_AMOUNT 	 	= config.getInt(    			"mobCatch.amount");
+    	MOBCATCH_ITEM           = new ItemStack(MOBCATCH_ITEMID, MOBCATCH_AMOUNT);
     	MOBCATCH_CHANCE 	 	= config.getInt(    			"mobCatch.chance");
     	
     	DISPLAY_TABLE_ENABLED 	= config.getBoolean(    		"displayTable.enabled");

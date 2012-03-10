@@ -8,11 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.plugin.PluginDescriptionFile;
-
 import com.avaje.ebean.config.ServerConfig;
 import com.leovanhaaren.brabotools.Brabotools;
-import com.leovanhaaren.brabotools.util.DisplayTable;
+import com.leovanhaaren.brabotools.models.DisplayTable;
 import com.mysql.jdbc.Statement;
 public class Database {
 	
@@ -20,7 +18,7 @@ public class Database {
 	
     private final String url,username,password;
     
-    public static final String SAVE_TABLE = "INSERT INTO `displaytables` (id, world, x, y, z, player, itemid, itemdata) VALUES (?,?,?,?,?,?,?,?)";
+    public static final String SAVE_TABLE = "REPLACE INTO `displaytables` (id, world, x, y, z, player, itemid, itemdata) VALUES (?,?,?,?,?,?,?,?)";
     
     public static final String DELETE_TABLE =    "DELETE FROM `displaytables` WHERE id = ? LIMIT 1";
     
@@ -36,8 +34,7 @@ public class Database {
         try {
             Class.forName(db.getDataSourceConfig().getDriver());
         } catch(Exception e) {
-        	PluginDescriptionFile pdfFile = plugin.getDescription();
-        	Brabotools.logger.warning(pdfFile.getName() + " Warning JDBC not available.");
+        	Brabotools.logger.warning(plugin.getName() + " Warning JDBC not available.");
         }
         
         this.url = db.getDataSourceConfig().getUrl();
@@ -64,8 +61,7 @@ public class Database {
             	tables.add(table);
             }
         } catch(Exception e) {
-        	PluginDescriptionFile pdfFile = plugin.getDescription();
-        	Brabotools.logger.warning(pdfFile.getName() + " Error loading tables of world " + world);
+        	Brabotools.logger.warning(plugin.getName() + " Error loading tables of world " + world);
             e.printStackTrace();
         } finally {
             try {
@@ -86,9 +82,9 @@ public class Database {
             st = conn.prepareStatement(SAVE_TABLE, Statement.RETURN_GENERATED_KEYS);
             st.setInt(1, 		table.getId());
             st.setString(2, 	table.getWorld().getName());
-            st.setInt(3, (int)  table.getBlock().getLocation().getX());
-            st.setInt(4, (int)  table.getBlock().getLocation().getY());
-            st.setInt(5, (int)  table.getBlock().getLocation().getZ());
+            st.setInt(3,        table.getBlock().getLocation().getBlockX());
+            st.setInt(4,        table.getBlock().getLocation().getBlockY());
+            st.setInt(5,        table.getBlock().getLocation().getBlockZ());
             st.setString(6, 	table.getPlayer());
             st.setInt(7, 		table.getItemId());
             st.setShort(8, 		table.getItemData());
@@ -98,8 +94,7 @@ public class Database {
                 table.setId(rs.getInt(1));
             }
         } catch(Exception e) {
-        	PluginDescriptionFile pdfFile = plugin.getDescription();
-        	Brabotools.logger.warning(pdfFile.getName() + " Error saving table " + table.getId() + "!");
+        	Brabotools.logger.warning(plugin.getName() + " Error saving table " + table.getId() + "!");
             e.printStackTrace();
             return false;
         } finally {
@@ -116,22 +111,19 @@ public class Database {
     public boolean delete(DisplayTable table) {
         Connection conn = null;
         PreparedStatement st = null;
-        ResultSet rs = null;
         try {
             conn = getConnection();
             st = conn.prepareStatement(DELETE_TABLE);
             st.setInt(1, table.getId());
             st.execute();
         } catch(Exception e) {
-        	PluginDescriptionFile pdfFile = plugin.getDescription();
-        	Brabotools.logger.warning(pdfFile.getName() + " Error deleting table " + table.getId() + "!");
+        	Brabotools.logger.warning(plugin.getName() + " Error deleting table " + table.getId() + "!");
             e.printStackTrace();
             return false;
         } finally {
             try{
                 if(conn != null) conn.close();
                 if(st != null) st.close();
-                if(rs != null) rs.close();
             } catch(Exception e) {}
         }
         return true;

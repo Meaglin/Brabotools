@@ -1,14 +1,19 @@
 package com.leovanhaaren.brabotools.listener;
 
 import java.util.List;
+import java.util.Random;
 
-import org.bukkit.Material;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.Egg;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Snowball;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -16,22 +21,23 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.leovanhaaren.brabotools.Brabotools;
-import com.leovanhaaren.brabotools.inventory.ItemManager;
-import com.leovanhaaren.brabotools.util.DisplayTable;
+import com.leovanhaaren.brabotools.ConfigManager;
+import com.leovanhaaren.brabotools.models.DisplayTable;
+import com.leovanhaaren.brabotools.util.InventoryUtil;
 
 public class EntityListener implements Listener {
 	
 	private Brabotools plugin;
+	Random random = new Random();
 
 	public EntityListener(Brabotools brabotools) {
 		plugin = brabotools;
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	/* @EventHandler(priority = EventPriority.NORMAL)
     public void onProjectileHit(ProjectileHitEvent event) {
 		Entity entity = event.getEntity();
 		
@@ -48,30 +54,78 @@ public class EntityListener implements Listener {
                 }
             }
         }
-    }
+    } */
 	
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	@SuppressWarnings("deprecation")
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void OnEntityDamage(EntityDamageEvent event) {
 		if ((event instanceof EntityDamageByEntityEvent)) {
 			EntityDamageByEntityEvent entity = (EntityDamageByEntityEvent)event;
 			
-			if ((entity.getDamager() instanceof Egg)) {
-				Egg egg = (Egg)entity.getDamager();
-				LivingEntity target = (LivingEntity) event.getEntity();
-	            Entity shooter = egg.getShooter();
-	            
-	            if((shooter instanceof Player)) {
-		            if(!(target instanceof Player)) {
-		            	Player player = (Player) shooter;
-		            	
-		            	if(plugin.canUse(player, "mobCatch")) {
-		            		if(plugin.canHit(player, target)) {
-		            			plugin.getCaptureManager().Catch(player, target);
-		            		}
-		            	}
-		            }
-	            }
+			if(!(entity.getDamager() instanceof Egg)) return;
+			
+			Egg egg = (Egg)entity.getDamager();
+			LivingEntity target = (LivingEntity) event.getEntity();
+			EntityType entitytype = target.getType();
+			Entity shooter = egg.getShooter();
+			
+			if(!(shooter instanceof Player)) return;
+			Player player = (Player) shooter;
+			ConfigManager config = plugin.getConfigManager();
+			
+			if (!plugin.getConfig().getBoolean("mobCatch.mobs." + entitytype.getName())) {
+			    player.sendMessage(config.MOB_DISABLED_MESSAGE);
+			    return;
 			}
+
+			if (target instanceof Tameable) {
+			    if (((Tameable)target).isTamed()) {
+			        player.sendMessage(config.MOB_TAMED_MESSAGE);
+			        return;
+			    }
+			}
+			
+			if (target instanceof Animals) {
+			    if (!((Animals)target).isAdult()) {
+			        player.sendMessage(config.MOB_BABY_MESSAGE);
+			        return;
+			    }
+			}
+
+			if(!InventoryUtil.has(player.getInventory(), plugin.getConfigManager().MOBCATCH_ITEM)) {
+			    return;
+			}
+			
+			if(!plugin.canUse(player, "mobCatch")) {
+			    player.sendMessage(ChatColor.YELLOW + "You're not allowed to catch mobs.");
+			    return;
+			}
+			
+			if(!plugin.canHit(player, target)) {
+			    player.sendMessage(ChatColor.YELLOW + "You're not allowed to catch mobs in this zone.");
+			    return;
+			}
+	        
+	        if (!InventoryUtil.Remove(player.getInventory(), config.MOBCATCH_ITEM)) {
+	            player.sendMessage(config.MOB_COST_MESSAGE);
+	            return;
+	        }
+	        
+	        if (random.nextInt(100) < config.MOBCATCH_CHANCE) {
+	            World world       = player.getWorld();
+	            Location location = target.getLocation();
+	            
+	            target.remove();
+	                
+	            ItemStack item = new ItemStack(383, 1, target.getType().getTypeId());
+	            world.dropItem(location, item);
+	            
+	            String mob = target.getType().getName();
+	            player.sendMessage(ChatColor.GOLD + mob + config.MOB_CAUGHT_MESSAGE);
+	            
+	            player.updateInventory();
+	            return;
+	        }
 		}
 	}
 	

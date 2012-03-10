@@ -14,8 +14,8 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.leovanhaaren.brabotools.Brabotools;
-import com.leovanhaaren.brabotools.util.DisplayManager;
-import com.leovanhaaren.brabotools.util.DisplayTable;
+import com.leovanhaaren.brabotools.models.DisplayManager;
+import com.leovanhaaren.brabotools.models.DisplayTable;
 
 public class PlayerListener implements Listener {
 

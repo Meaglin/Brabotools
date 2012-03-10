@@ -7,7 +7,7 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
 import com.leovanhaaren.brabotools.Brabotools;
-import com.leovanhaaren.brabotools.util.DisplayTable;
+import com.leovanhaaren.brabotools.models.DisplayTable;
 
 public class WorldListener implements Listener {
 	

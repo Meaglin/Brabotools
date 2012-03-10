@@ -11,7 +11,7 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import com.leovanhaaren.brabotools.Brabotools;
-import com.leovanhaaren.brabotools.util.DisplayTable;
+import com.leovanhaaren.brabotools.models.DisplayTable;
 
 public class BlockListener implements Listener {
 	

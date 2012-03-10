@@ -1,4 +1,4 @@
-package com.leovanhaaren.brabotools.util;
+package com.leovanhaaren.brabotools.models;
 
 import java.util.Collection;
 import java.util.HashMap;

@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,9 +17,8 @@ import com.leovanhaaren.brabotools.listener.EntityListener;
 import com.leovanhaaren.brabotools.listener.PistonListener;
 import com.leovanhaaren.brabotools.listener.PlayerListener;
 import com.leovanhaaren.brabotools.listener.WorldListener;
+import com.leovanhaaren.brabotools.models.DisplayManager;
 import com.leovanhaaren.brabotools.persistence.Database;
-import com.leovanhaaren.brabotools.util.CaptureMob;
-import com.leovanhaaren.brabotools.util.DisplayManager;
 import com.zones.Zones;
 import com.zones.permissions.Permissions;
 import com.zones.permissions.PermissionsResolver;
@@ -31,21 +29,15 @@ public class Brabotools extends JavaPlugin {
     public static Logger      	logger			= Logger.getLogger("Minecraft");
     private ConfigManager 		config 			= null;
     private Database			database		= null;
-	private CaptureMob 		capture			= null;
     private DisplayManager 		manager			= null;
     private Permissions 		permissions 	= null;
     private Zones 				zones 			= null;
 
    	public void onDisable(){
-   		PluginDescriptionFile pdfFile = this.getDescription();
-   		logger.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is now disabled.");
    		manager.unloadTables();
    	}   
    	
     public void onEnable() {
-    	PluginDescriptionFile pdfFile = this.getDescription();
-		logger.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is now enabled.");
-		
 		PluginManager pm = getServer().getPluginManager();
 		
 		config = new ConfigManager(this);
@@ -55,10 +47,8 @@ public class Brabotools extends JavaPlugin {
 		if(plugin != null) zones = (Zones)plugin;
 		
 		database 		= new Database(this);
-		capture 		= new CaptureMob(this);
 		manager 		= new DisplayManager(this);
 		permissions 	= PermissionsResolver.resolve(this);
-		
 
 		pm.registerEvents(new WorldListener(this), this);
 		pm.registerEvents(new BlockListener(this), this);
@@ -74,11 +64,10 @@ public class Brabotools extends JavaPlugin {
 			if (args.length != 1) return false;
 			if (!args[0].equalsIgnoreCase("reload")) return false;
 			
-			Player player = (Player) sender;
-			if (!canUse(player, "displaytable.reload")) return false;
+			if ( sender instanceof Player && !canUse((Player)sender, "displaytable.reload")) return false;
 			
 			manager.reloadTableItems();
-			player.sendMessage(config.TABLES_RELOADED_MESSAGE);
+			sender.sendMessage(config.TABLES_RELOADED_MESSAGE);
 			return true;
 		}
 		return false;
@@ -86,7 +75,7 @@ public class Brabotools extends JavaPlugin {
 	
 	public boolean canUse(Player player, String node) {
 		if (permissions != null) {
-			return permissions.canUse(player, node);
+			return permissions.canUse(player, "brabotools." + node);
 		}
 		return true;
 	}
@@ -111,10 +100,6 @@ public class Brabotools extends JavaPlugin {
 	
     public Database getMysqlDatabase() {
         return database;
-    }
-    
-    public CaptureMob getCaptureManager() {
-        return capture;
     }
     
 	public DisplayManager getDisplayManager() {

@@ -1,4 +1,4 @@
-package com.leovanhaaren.brabotools.util;
+package com.leovanhaaren.brabotools.models;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -12,7 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.leovanhaaren.brabotools.inventory.ItemManager;
+import com.leovanhaaren.brabotools.util.InventoryUtil;
+
 
 public class DisplayTable {
 	private int 		id;
@@ -42,7 +43,7 @@ public class DisplayTable {
 			checkForDupedItem();
 		}
 		
-		ItemManager.Remove(player.getInventory(), item);
+		InventoryUtil.Remove(player.getInventory(), item);
 	}
 
 	public DisplayTable(int id, String world, int x, int y, int z, String player, int itemid, short itemdata) {	
